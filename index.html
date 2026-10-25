@@ -1151,6 +1151,24 @@ async function startUser(user){
   syncState=ok?"ok":"offline";
   startApp();
   if(needPush) save();
+  if(user.user_metadata&&user.user_metadata.pw_reset) forcePw();
+}
+// Nach einem Reset durch die Lehrkraft: eigenes Passwort wählen
+function forcePw(){
+  if(tourI>=0){const t=$("#tour");if(t)t.remove();tourI=-1}
+  $("#layer").innerHTML=`<div class="scrim"><div class="sheet" role="dialog" aria-modal="true"><h3>Neues Passwort wählen</h3>
+   <p class="note-s">Dein Passwort wurde zurückgesetzt. Wähle jetzt ein eigenes Passwort, das nur du kennst (mindestens 8 Zeichen).</p>
+   <div class="field"><label for="fp1">Neues Passwort</label><input id="fp1" type="password" autocomplete="new-password"></div>
+   <div class="field"><label for="fp2">Wiederholen</label><input id="fp2" type="password" autocomplete="new-password"></div>
+   <p class="lmsg" id="fpm" role="alert"></p>
+   <div class="actions"><button class="primary" id="fpgo">Passwort speichern</button></div></div></div>`;
+  $("#fpgo").onclick=async()=>{const a=$("#fp1").value,b=$("#fp2").value,m=$("#fpm");
+    if(a.length<8){m.textContent="Mindestens 8 Zeichen.";return} if(a!==b){m.textContent="Die Passwörter sind nicht gleich.";return}
+    $("#fpgo").disabled=true;
+    const {error}=await CLOUD.auth.updateUser({password:a,data:{pw_reset:false}});
+    if(error){$("#fpgo").disabled=false;m.textContent=authMsg(error);return}
+    try{await CLOUD.rpc("clear_pw_reset")}catch(e){}
+    closeSheet();toast("Passwort gespeichert");if(!S.tourSeen)setTimeout(startTour,300)};
 }
 async function logout(){
   await push();
@@ -1160,7 +1178,7 @@ async function logout(){
 }
 function startApp(){
   const nav=document.querySelector("nav.tabs");if(nav)nav.hidden=false;
-  runNewDay(); render(); if(!S.tourSeen) setTimeout(startTour,400);
+  runNewDay(); render(); if(!S.tourSeen) setTimeout(()=>{if(!$("#fp1"))startTour()},400);
 }
 async function boot(){
   const configured=!!(CFG.supabaseUrl&&CFG.supabaseAnonKey);
