@@ -37,10 +37,29 @@ Unter **Authentication → URL Configuration**:
 ### 4. App mit der Datenbank verbinden
 Unter **Project Settings → API** die **Project URL** und den **anon public**-Schlüssel kopieren und in [`config.js`](config.js) eintragen. Committen, fertig. Nach etwa einer Minute ist die App mit Anmeldung online.
 
+## Lehrkraft-Seite
+
+**https://ratpoison-de.github.io/pags-lernplaner/lehrkraft.html**
+
+- Anmeldung mit einem eigenen Lernplaner-Konto, das als Lehrkraft freigeschaltet ist.
+- Kontenliste mit Suche, letzter Anmeldung und letztem Speichern. Planer-Inhalte der Schüler sind nicht sichtbar.
+- **Neues Passwort:** erzeugt ein gut vorlesbares Startpasswort, meldet alle Geräte des Kontos ab. Beim nächsten Anmelden muss die Schülerin bzw. der Schüler ein eigenes Passwort wählen.
+- **Löschen:** nach Eintippen des Benutzernamens, mit allen Daten. Lehrkraft-Konten sind geschützt.
+
+Die Rechte prüft die Datenbank selbst ([`supabase/admin.sql`](supabase/admin.sql)), es liegt kein geheimer Schlüssel im Browser.
+
+### Weitere Lehrkraft freischalten
+Die Kollegin bzw. der Kollege legt in der App über „Neues Konto“ ein Konto an. Dann im **SQL Editor**:
+
+```sql
+insert into public.admins (user_id)
+select id from auth.users where email = 'BENUTZERNAME@lernplaner.pags-kuelsheim.de';
+```
+
 ## Betrieb
 
-### Passwort zurücksetzen
-Es gibt keine E-Mail zum Zurücksetzen. Im **SQL Editor** (Benutzername und neues Passwort anpassen):
+### Passwort zurücksetzen ohne Lehrkraft-Seite
+Notfalls im **SQL Editor** (Benutzername und neues Passwort anpassen):
 
 ```sql
 update auth.users
@@ -73,5 +92,7 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 |---|---|
 | `index.html` | Die komplette App |
 | `config.js` | Verbindung zu Supabase |
+| `lehrkraft.html` | Bereich für Lehrkräfte |
 | `supabase/schema.sql` | Tabelle, Zugriffsregeln, Konto-Löschfunktion |
+| `supabase/admin.sql` | Lehrkraft-Rechte und -Funktionen |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |
