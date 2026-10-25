@@ -1,0 +1,77 @@
+# PAGS Lernplaner
+
+Lernplaner für Schülerinnen und Schüler der Pater-Alois-Grimm-Schule Külsheim: Aufgaben, IL-Stunden, Tages- und Wochenplanung, Prüfungsplaner, Kalender, Tour und FAQ.
+
+Entwickelt von Thorsten von Plotho-Kettner.
+
+**App:** https://ratpoison-de.github.io/pags-lernplaner/
+
+## So funktioniert es
+
+- Die App selbst liegt auf GitHub Pages (diese Dateien).
+- Anmeldung und Speicherung laufen über [Supabase](https://supabase.com) (Server in der EU).
+- Schülerinnen und Schüler legen ihr Konto selbst an: **Benutzername + Passwort**, ohne E-Mail-Adresse.
+- Jede Person sieht nur ihre eigenen Daten (Row Level Security in der Datenbank).
+- Alles wird automatisch gespeichert. Ohne Internet arbeitet die App mit einer lokalen Kopie weiter und lädt Änderungen hoch, sobald wieder eine Verbindung besteht.
+- Solange `config.js` leer ist, läuft die App ohne Anmeldung und speichert nur auf dem Gerät.
+
+## Einrichtung (einmalig, ca. 10 Minuten)
+
+### 1. Supabase-Projekt anlegen
+1. Auf https://supabase.com ein kostenloses Konto anlegen.
+2. **New project** → Name z. B. `pags-lernplaner`, Region **Central EU (Frankfurt)**, sicheres Datenbank-Passwort vergeben.
+
+### 2. Datenbank einrichten
+1. Im Projekt links **SQL Editor** öffnen.
+2. Den Inhalt von [`supabase/schema.sql`](supabase/schema.sql) einfügen und **Run** klicken.
+
+### 3. Anmeldung einstellen
+Unter **Authentication → Sign In / Providers → Email**:
+- **Enable Email provider**: an
+- **Confirm email**: **aus** (wichtig, die Schüler haben keine E-Mail-Adresse in der App)
+- Unter **Authentication → Sign In / Providers**: **Allow new users to sign up**: an
+
+Unter **Authentication → URL Configuration**:
+- **Site URL**: `https://ratpoison-de.github.io/pags-lernplaner/`
+
+### 4. App mit der Datenbank verbinden
+Unter **Project Settings → API** die **Project URL** und den **anon public**-Schlüssel kopieren und in [`config.js`](config.js) eintragen. Committen, fertig. Nach etwa einer Minute ist die App mit Anmeldung online.
+
+## Betrieb
+
+### Passwort zurücksetzen
+Es gibt keine E-Mail zum Zurücksetzen. Im **SQL Editor** (Benutzername und neues Passwort anpassen):
+
+```sql
+update auth.users
+set encrypted_password = extensions.crypt('NeuesPasswort123', extensions.gen_salt('bf'))
+where email = 'benutzername@lernplaner.pags-kuelsheim.de';
+```
+
+Die Schülerin bzw. der Schüler meldet sich damit an und ändert das Passwort unter ⋯ → „Passwort ändern“.
+(Die Adresse `…@lernplaner.pags-kuelsheim.de` ist nur eine interne Login-Kennung, es werden keine Mails verschickt.)
+
+### Konten ansehen oder löschen
+**Authentication → Users**. Schüler können ihr Konto auch selbst löschen (⋯ → „Konto löschen“), dabei werden alle Daten mitgelöscht.
+
+### Neue Registrierungen stoppen
+**Authentication → Sign In / Providers → Allow new users to sign up** ausschalten. Bestehende Konten funktionieren weiter.
+
+### Pausiertes Projekt
+Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B. in den Ferien). Im Dashboard auf **Restore project** klicken. Die Daten bleiben erhalten.
+
+## Datenschutz
+
+- Gespeichert werden nur der selbst gewählte Benutzername, das Passwort (verschlüsselt) und die Planer-Einträge.
+- Die Schüler werden gebeten, nicht ihren vollen Namen als Benutzernamen zu verwenden.
+- Server-Standort: EU (Frankfurt). Supabase bietet einen Auftragsverarbeitungsvertrag (DPA) an.
+- Vor dem Einsatz mit Schülerinnen und Schülern: Schulleitung und Datenschutzbeauftragte einbeziehen.
+
+## Dateien
+
+| Datei | Inhalt |
+|---|---|
+| `index.html` | Die komplette App |
+| `config.js` | Verbindung zu Supabase |
+| `supabase/schema.sql` | Tabelle, Zugriffsregeln, Konto-Löschfunktion |
+| `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |
