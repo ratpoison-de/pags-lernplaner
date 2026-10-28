@@ -6,6 +6,10 @@ Entwickelt von Thorsten von Plotho-Kettner.
 
 **App:** https://ratpoison-de.github.io/pags-lernplaner/
 
+## Kompakte Startseite
+
+**https://ratpoison-de.github.io/pags-lernplaner/start/** – alle Apps nur mit Icon und Namen (Ordner `start/`).
+
 ## Übersichtsseite aller Apps
 
 **https://ratpoison-de.github.io/pags-lernplaner/apps/**

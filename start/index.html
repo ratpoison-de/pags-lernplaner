@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PAGS Apps</title>
+<meta name="description" content="Alle Apps der Pater-Alois-Grimm-Schule Külsheim auf einen Blick">
+<meta name="theme-color" content="#F7F7F6">
+<link rel="icon" href="../icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#F7F7F6; --card:#FFFFFF; --ink:#2A2A2B; --mute:#6C6C70; --line:#E2E2DF; --red:#AD120D;
+  --f-display:"Archivo","Arial Black",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.4;
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px;border-radius:12px}
+.wrap{max-width:760px;margin:0 auto}
+header{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 0 8px}
+header img{height:56px;width:auto}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,6vw,40px);text-transform:uppercase;letter-spacing:-.01em;margin:22px 0 0;line-height:1}
+.dots{width:180px;height:6px;margin:16px auto 0;background:radial-gradient(circle,var(--red) 2px,transparent 2.5px) 0 50%/11px 6px repeat-x}
+
+.apps{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:30px 12px}
+@media (min-width:560px){.apps{grid-template-columns:repeat(5,1fr);gap:38px 16px}}
+.apps a{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--ink);padding:6px 2px;border-radius:16px}
+.icon{width:76px;height:76px;border-radius:22px;background:var(--c);display:grid;place-items:center;
+  box-shadow:0 1px 2px rgba(0,0,0,.08),0 8px 20px -8px var(--c);transition:transform .15s ease}
+.icon svg{width:44px;height:44px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.apps a:hover .icon{transform:translateY(-3px)}
+.apps a:active .icon{transform:scale(.95)}
+.name{font-weight:700;font-size:15px;line-height:1.2;text-align:center;text-wrap:balance;hyphens:manual}
+
+footer{margin-top:64px;padding:22px 0 40px;border-top:1px solid var(--line);text-align:center;font-size:14px;color:var(--mute);display:flex;flex-direction:column;gap:6px}
+footer b{color:var(--ink)}
+footer a{color:var(--ink);font-weight:700}
+@media (prefers-reduced-motion:reduce){.icon{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="https://pags-kuelsheim.de" target="_blank" rel="noopener"><img src="../apps/img/pags-logo.png" alt="PAGS Gemeinschaftsschule Külsheim" width="117" height="56"></a>
+  <h1>PAGS Apps</h1>
+  <div class="dots" aria-hidden="true"></div>
+</header>
+
+<main>
+<ul class="apps">
+  <li><a href="../" style="--c:#AD120D">
+    <span class="icon"><svg viewBox="0 0 48 48"><rect x="8" y="10" width="32" height="30" rx="4"/><path d="M8 19h32M16 6v8M32 6v8M17 30l5 5 9-10"/></svg></span>
+    <span class="name">Lernplaner</span></a></li>
+
+  <li><a href="../wochenstapel/" style="--c:#383838">
+    <span class="icon"><svg viewBox="0 0 48 48"><path d="M10 13h28M10 21h28M10 29h28"/><path d="M10 37h16" stroke="#F2B732"/></svg></span>
+    <span class="name">Wochen&shy;stapel</span></a></li>
+
+  <li><a href="https://ratpoison-de.github.io/tag-der-berufe/" style="--c:#1B2A6B">
+    <span class="icon"><svg viewBox="0 0 48 48"><rect x="7" y="15" width="34" height="24" rx="4"/><path d="M18 15v-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4M7 25h34M24 23v5"/></svg></span>
+    <span class="name">Tag der Berufe</span></a></li>
+
+  <li><a href="https://ratpoison-de.github.io/pags-app/" style="--c:#1E7FA0">
+    <span class="icon"><svg viewBox="0 0 48 48"><path d="M6 20L24 9l18 11"/><path d="M10 18v21h28V18"/><path d="M20 39v-9h8v9"/><rect x="14" y="23" width="5" height="5" rx="1"/><rect x="29" y="23" width="5" height="5" rx="1"/><path d="M24 9v-4h6"/></svg></span>
+    <span class="name">PAGS-App</span></a></li>
+
+  <li><a href="../fachschaft-deutsch/" style="--c:#2E6B5E">
+    <span class="icon"><svg viewBox="0 0 48 48"><path d="M24 13c-4-3-10-4-16-3v26c6-1 12 0 16 3 4-3 10-4 16-3V10c-6-1-12 0-16 3z"/><path d="M24 13v26"/><path d="M30 10v10l3-2.5 3 2.5V9.6" stroke="#F2B732"/></svg></span>
+    <span class="name">Fachschaft Deutsch</span></a></li>
+
+  <li><a href="../korrektur/" style="--c:#B8650F">
+    <span class="icon"><svg viewBox="0 0 48 48"><rect x="7" y="9" width="24" height="30" rx="3"/><path d="M12 17h14M12 24h9M12 31h7"/><path d="M36 13l5 5-14 14-6 1 1-6z"/></svg></span>
+    <span class="name">Korrektur&shy;tabelle</span></a></li>
+
+  <li><a href="../lernbegleiter/" style="--c:#3B6EA8">
+    <span class="icon"><svg viewBox="0 0 48 48"><path d="M8 12h22M8 20h22M8 28h14"/><path d="M8 36h12" stroke="#F2B732"/><path d="M34 26l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z" fill="#F2B732" stroke="#F2B732" stroke-width="1.5"/></svg></span>
+    <span class="name">Lern&shy;begleiter</span></a></li>
+
+  <li><a href="../lehrkraft.html" style="--c:#5A4A8A">
+    <span class="icon"><svg viewBox="0 0 48 48"><circle cx="18" cy="17" r="7"/><path d="M6 39c0-7 5-12 12-12 3 0 5.6.9 7.6 2.5"/><circle cx="34" cy="31" r="5"/><path d="M34 36v6M34 39h3"/></svg></span>
+    <span class="name">Lehrkraft-Seite</span></a></li>
+
+  <li><a href="../apps/downloads/Wochenstapel.apk" download style="--c:#2E8B4A">
+    <span class="icon"><svg viewBox="0 0 48 48"><rect x="13" y="5" width="22" height="38" rx="4"/><path d="M21 38h6"/><path d="M24 13v14M18.5 21.5L24 27l5.5-5.5"/></svg></span>
+    <span class="name">Wochen&shy;stapel Android</span></a></li>
+
+  <li><a href="../apps/downloads/Wochenstapel-PAGS.html" download style="--c:#6C6C70">
+    <span class="icon"><svg viewBox="0 0 48 48"><path d="M12 6h16l9 9v27H12z"/><path d="M28 6v9h9"/><path d="M19 27l-3 3 3 3M30 27l3 3-3 3M26 25l-3 11"/></svg></span>
+    <span class="name">Wochen&shy;stapel als Datei</span></a></li>
+</ul>
+</main>
+
+<footer>
+  <span>Entwickelt von <b>Thorsten von Plotho-Kettner</b> · Pater-Alois-Grimm-Schule Külsheim</span>
+  <span><a href="../apps/">Alle Apps mit Beschreibung und Anleitungen</a></span>
+</footer>
+</div>
+</body>
+</html>
