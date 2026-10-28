@@ -64,10 +64,10 @@ footer strong{color:var(--ink2)}
 
   <section class="card" id="ios">
     <h2><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46a4.2 4.2 0 0 0-3.3-1.79c-1.4-.14-2.75.83-3.46.83-.72 0-1.82-.81-2.99-.79a4.4 4.4 0 0 0-3.73 2.27c-1.6 2.77-.41 6.86 1.14 9.1.76 1.1 1.66 2.33 2.84 2.29 1.14-.05 1.57-.74 2.95-.74 1.37 0 1.76.74 2.96.71 1.23-.02 2-1.11 2.75-2.22a9.7 9.7 0 0 0 1.25-2.57 3.97 3.97 0 0 1-2.37-3.63zM14.1 5.86A3.9 3.9 0 0 0 15 3a4 4 0 0 0-2.6 1.34 3.7 3.7 0 0 0-.93 2.78 3.3 3.3 0 0 0 2.63-1.26z"/></svg>iPhone &amp; iPad <span class="badge" data-for="ios" hidden>Dein Gerät</span></h2>
-    <a class="btn" href="PAGS-Vokabeltrainer.mobileconfig">App-Profil laden</a>
+    <a class="btn" id="profil" href="PAGS-Vokabeltrainer.mobileconfig">App-Profil laden</a>
     <ol>
       <li>Diese Seite in <b>Safari</b> öffnen und „App-Profil laden“ tippen → „Erlauben“ → „Schließen“.</li>
-      <li><b>Einstellungen</b> öffnen. Ganz oben steht „Profil geladen“ – antippen.<br><span class="note">Falls nicht: Einstellungen → Allgemein → VPN und Geräteverwaltung → „PAGS Vokabeltrainer“.</span></li>
+      <li><b>Einstellungen</b> öffnen. Ganz oben steht „Profil geladen“ – antippen.<br><span class="note">Falls nicht: Einstellungen → Allgemein → VPN und Geräteverwaltung → „PAGS Vokabeltrainer“. Landet die Datei stattdessen in „Downloads“: App „Dateien“ öffnen → Downloads → „PAGS-Vokabeltrainer“ antippen.</span></li>
       <li>„Installieren“ tippen, Code eingeben, noch einmal „Installieren“.</li>
       <li>Fertig – das Symbol „Vokabeln“ liegt auf dem Home-Bildschirm und öffnet die App im Vollbild.</li>
     </ol>
@@ -87,6 +87,16 @@ footer strong{color:var(--ink2)}
 <footer>PAGS Vokabeltrainer · entwickelt von <strong>Thorsten von Plotho-Kettner</strong><br>Pater-Alois-Grimm-Schule Külsheim</footer>
 <script>
 (function(){
+  // Profil mit dem richtigen Dateityp übergeben, damit Safari es als Profil erkennt
+  var pr=document.getElementById('profil');
+  pr.addEventListener('click',function(e){
+    if(!window.fetch||!window.Blob)return;
+    e.preventDefault();
+    fetch(pr.getAttribute('href')).then(function(r){return r.blob();}).then(function(b){
+      var u=URL.createObjectURL(new Blob([b],{type:'application/x-apple-aspen-config'}));
+      location.href=u;
+    }).catch(function(){location.href=pr.getAttribute('href');});
+  });
   var ua=navigator.userAgent||'',ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),and=/Android/.test(ua);
   var k=ios?'ios':and?'android':'';
   if(k){var c=document.getElementById(k);c.classList.add('mine');c.parentNode.insertBefore(c,c.parentNode.querySelector('section'));document.querySelector('[data-for="'+k+'"]').hidden=false;}
