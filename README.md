@@ -10,7 +10,7 @@ Entwickelt von Thorsten von Plotho-Kettner.
 
 **https://ratpoison-de.github.io/pags-lernplaner/apps/**
 
-Alle Apps (Lernplaner, Wochenstapel, Lernbegleiter, Lehrkraft-Seite, PAGS-App, Tag der Berufe, Wochenstapel für Android und als Datei) mit Anleitungen als PDF. Dateien im Ordner `apps/`.
+Alle Apps (Lernplaner, Wochenstapel, Lernbegleiter, Fachschaft Deutsch, Korrekturtabelle, Lehrkraft-Seite, PAGS-App, Tag der Berufe, Wochenstapel für Android und als Datei) mit Anleitungen als PDF. Dateien im Ordner `apps/`.
 
 ## So funktioniert es
 
