@@ -32,10 +32,29 @@ h1{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,6vw,40px);t
 .icon{width:76px;height:76px;border-radius:22px;background:var(--c);display:grid;place-items:center;
   box-shadow:0 1px 2px rgba(0,0,0,.08),0 8px 20px -8px var(--c);transition:transform .15s ease}
 .icon svg{width:44px;height:44px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.apps .icon svg text{stroke:none}
 .apps a:hover .icon{transform:translateY(-3px)}
 .apps a:active .icon{transform:scale(.95)}
 .name{font-weight:700;font-size:15px;line-height:1.2;text-align:center;text-wrap:balance;hyphens:manual}
 
+.folder{background:#E4E4E1;box-shadow:0 1px 2px rgba(0,0,0,.08),0 8px 20px -10px rgba(0,0,0,.35)}
+.mini{display:grid;grid-template-columns:repeat(3,14px);gap:4px}
+.mini i{width:14px;height:14px;border-radius:4px;display:block}
+dialog{border:0;border-radius:24px;padding:20px 18px 18px;width:min(640px,calc(100vw - 24px));max-height:calc(100vh - 40px);background:var(--bg);color:var(--ink);box-shadow:0 24px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(24,24,26,.45);backdrop-filter:blur(3px)}
+dialog[open]{animation:pop .18s ease}
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.dhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.dhead h2{font-family:var(--f-display);font-weight:900;font-size:24px;text-transform:uppercase;margin:0}
+.x{width:44px;height:44px;border-radius:22px;border:0;background:#E4E4E1;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.x svg{width:20px;height:20px}
+.fgt{font-family:var(--f-display);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:18px 0 10px}
+.apps.small{margin:0;gap:18px 8px}
+@media (min-width:560px){.apps.small{grid-template-columns:repeat(5,1fr)}}
+.apps.small .icon{width:58px;height:58px;border-radius:17px}
+.apps.small .icon svg{width:34px;height:34px}
+.apps.small .name{font-size:13.5px}
+.dfoot{text-align:center;font-size:14px;margin:22px 0 0}.dfoot a{color:var(--ink);font-weight:700}
 footer{margin-top:64px;padding:22px 0 40px;border-top:1px solid var(--line);text-align:center;font-size:14px;color:var(--mute);display:flex;flex-direction:column;gap:6px}
 footer b{color:var(--ink)}
 footer a{color:var(--ink);font-weight:700}
@@ -68,9 +87,9 @@ footer a{color:var(--ink);font-weight:700}
     <span class="icon"><svg viewBox="0 0 48 48"><path d="M6 20L24 9l18 11"/><path d="M10 18v21h28V18"/><path d="M20 39v-9h8v9"/><rect x="14" y="23" width="5" height="5" rx="1"/><rect x="29" y="23" width="5" height="5" rx="1"/><path d="M24 9v-4h6"/></svg></span>
     <span class="name">PAGS-App</span></a></li>
 
-  <li><a href="../fachschaft-deutsch/" style="--c:#2E6B5E">
-    <span class="icon"><svg viewBox="0 0 48 48"><path d="M24 13c-4-3-10-4-16-3v26c6-1 12 0 16 3 4-3 10-4 16-3V10c-6-1-12 0-16 3z"/><path d="M24 13v26"/><path d="M30 10v10l3-2.5 3 2.5V9.6" stroke="#F2B732"/></svg></span>
-    <span class="name">Fachschaft Deutsch</span></a></li>
+  <li><a href="../fachschaft/" id="fsOpen" aria-haspopup="dialog">
+    <span class="icon folder"><span class="mini"><i style="background:#2E6B5E"></i><i style="background:#1B2A6B"></i><i style="background:#3B6EA8"></i><i style="background:#AD120D"></i><i style="background:#2E8B4A"></i><i style="background:#3F8F3A"></i><i style="background:#7A5AA6"></i><i style="background:#1E7FA0"></i><i style="background:#383838"></i></span></span>
+    <span class="name">Fachschaften</span></a></li>
 
   <li><a href="../korrektur/" style="--c:#B8650F">
     <span class="icon"><svg viewBox="0 0 48 48"><rect x="7" y="9" width="24" height="30" rx="3"/><path d="M12 17h14M12 24h9M12 31h7"/><path d="M36 13l5 5-14 14-6 1 1-6z"/></svg></span>
@@ -93,11 +112,25 @@ footer a{color:var(--ink);font-weight:700}
     <span class="name">Wochen&shy;stapel als Datei</span></a></li>
 </ul>
 </main>
+<dialog id="fsDlg" aria-labelledby="fsTitle">
+  <div class="dhead"><h2 id="fsTitle">Fachschaften</h2><button class="x" id="fsClose" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="fg"><div class="fgt">Sprachen</div><ul class="apps small"><li><a href="../fachschaft/?fach=deutsch" style="--c:#2E6B5E"><span class="icon"><svg viewBox="0 0 48 48"><path d="M24 13c-4-3-10-4-16-3v26c6-1 12 0 16 3 4-3 10-4 16-3V10c-6-1-12 0-16 3z"/><path d="M24 13v26"/></svg></span><span class="name">Deutsch</span></a></li><li><a href="../fachschaft/?fach=englisch" style="--c:#1B2A6B"><span class="icon"><svg viewBox="0 0 48 48"><path d="M8 12h24a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H19l-7 6v-6H8a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/><text x="20" y="27" font-size="12" font-weight="800" fill="#fff" stroke="none" text-anchor="middle" font-family="Arial">EN</text></svg></span><span class="name">Englisch</span></a></li><li><a href="../fachschaft/?fach=franzoesisch" style="--c:#3B6EA8"><span class="icon"><svg viewBox="0 0 48 48"><path d="M8 12h24a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H19l-7 6v-6H8a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/><text x="20" y="27" font-size="12" font-weight="800" fill="#fff" stroke="none" text-anchor="middle" font-family="Arial">FR</text></svg></span><span class="name">Französisch</span></a></li></ul></div><div class="fg"><div class="fgt">Mathematik &amp; Naturwissenschaften</div><ul class="apps small"><li><a href="../fachschaft/?fach=mathematik" style="--c:#AD120D"><span class="icon"><svg viewBox="0 0 48 48"><path d="M14 10v12M8 16h12M28 16h12M10 32l8 8M18 32l-8 8M34 30v.5M34 41v.5M28 36h12"/></svg></span><span class="name">Mathematik</span></a></li><li><a href="../fachschaft/?fach=bnt" style="--c:#2E8B4A"><span class="icon"><svg viewBox="0 0 48 48"><path d="M12 38c0-14 8-24 26-26-1 16-10 26-24 26z"/><path d="M12 38c6-8 12-13 20-18"/></svg></span><span class="name">BNT</span></a></li><li><a href="../fachschaft/?fach=biologie" style="--c:#3F8F3A"><span class="icon"><svg viewBox="0 0 48 48"><path d="M16 6c0 10 16 14 16 24s-16 10-16 12M32 6c0 10-16 14-16 24s16 10 16 12"/><path d="M18 14h12M18 34h12M16 24h16"/></svg></span><span class="name">Biologie</span></a></li><li><a href="../fachschaft/?fach=chemie" style="--c:#7A5AA6"><span class="icon"><svg viewBox="0 0 48 48"><path d="M19 6h10M21 6v12L10 38a3 3 0 0 0 2.6 4.4h22.8A3 3 0 0 0 38 38L27 18V6"/><path d="M14 31h20"/></svg></span><span class="name">Chemie</span></a></li><li><a href="../fachschaft/?fach=physik" style="--c:#1E7FA0"><span class="icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="3" fill="#fff"/><ellipse cx="24" cy="24" rx="18" ry="7"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(120 24 24)"/></svg></span><span class="name">Physik</span></a></li><li><a href="../fachschaft/?fach=informatik" style="--c:#383838"><span class="icon"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="26" rx="3"/><path d="M18 41h12M24 35v6M19 19l-4 3 4 3M29 19l4 3-4 3M26 17l-4 10"/></svg></span><span class="name">Informatik</span></a></li></ul></div><div class="fg"><div class="fgt">Gesellschaft</div><ul class="apps small"><li><a href="../fachschaft/?fach=geographie" style="--c:#1E7FA0"><span class="icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c5 5 7 11 7 17s-2 12-7 17c-5-5-7-11-7-17s2-12 7-17z"/></svg></span><span class="name">Geographie</span></a></li><li><a href="../fachschaft/?fach=geschichte" style="--c:#8A5A2B"><span class="icon"><svg viewBox="0 0 48 48"><path d="M14 6h20M14 42h20M16 6c0 10 16 12 16 18s-16 8-16 18M32 6c0 10-16 12-16 18s16 8 16 18"/><path d="M20 38h8" /></svg></span><span class="name">Geschichte</span></a></li><li><a href="../fachschaft/?fach=gk" style="--c:#5A4A8A"><span class="icon"><svg viewBox="0 0 48 48"><path d="M6 18L24 8l18 10M9 18h30M12 22v14M20 22v14M28 22v14M36 22v14M7 40h34"/></svg></span><span class="name">Gemeinschaftskunde</span></a></li><li><a href="../fachschaft/?fach=wbs" style="--c:#B8650F"><span class="icon"><svg viewBox="0 0 48 48"><path d="M8 40V8M8 40h32"/><path d="M13 32l8-8 6 5 11-12"/><path d="M31 17h7v7"/></svg></span><span class="name">WBS</span></a></li></ul></div><div class="fg"><div class="fgt">Wahlpflicht &amp; Profil</div><ul class="apps small"><li><a href="../fachschaft/?fach=aes" style="--c:#C0392B"><span class="icon"><svg viewBox="0 0 48 48"><path d="M8 20h32v12a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8z"/><path d="M4 20h4M40 20h4M18 8c-2 3 2 5 0 8M26 8c-2 3 2 5 0 8"/></svg></span><span class="name">AES</span></a></li><li><a href="../fachschaft/?fach=technik" style="--c:#4A5A68"><span class="icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11.3 11.3l4.2 4.2M32.5 32.5l4.2 4.2M11.3 36.7l4.2-4.2M32.5 15.5l4.2-4.2"/></svg></span><span class="name">Technik</span></a></li><li><a href="../fachschaft/?fach=imp" style="--c:#2B4F8A"><span class="icon"><svg viewBox="0 0 48 48"><rect x="13" y="13" width="22" height="22" rx="3"/><path d="M19 6v7M29 6v7M19 35v7M29 35v7M6 19h7M6 29h7M35 19h7M35 29h7M20 20h8v8h-8z"/></svg></span><span class="name">IMP</span></a></li><li><a href="../fachschaft/?fach=nwt" style="--c:#2A7F62"><span class="icon"><svg viewBox="0 0 48 48"><path d="M24 6a12 12 0 0 0-7 21.7c1.3 1 2 2.5 2 4.3h10c0-1.8.7-3.3 2-4.3A12 12 0 0 0 24 6z"/><path d="M19 37h10M21 42h6"/></svg></span><span class="name">NwT</span></a></li></ul></div><div class="fg"><div class="fgt">Musisch &amp; Sport</div><ul class="apps small"><li><a href="../fachschaft/?fach=kunst" style="--c:#D35400"><span class="icon"><svg viewBox="0 0 48 48"><path d="M24 6C13 6 6 14 6 23c0 9 7 15 14 15 3 0 4-2 3-4-1-3 1-5 4-5h5c6 0 10-4 10-9 0-8-8-14-18-14z"/><circle cx="16" cy="20" r="2" fill="#fff"/><circle cx="24" cy="14" r="2" fill="#fff"/><circle cx="32" cy="18" r="2" fill="#fff"/></svg></span><span class="name">Bildende Kunst</span></a></li><li><a href="../fachschaft/?fach=musik" style="--c:#8E44AD"><span class="icon"><svg viewBox="0 0 48 48"><path d="M18 36V10l20-4v26"/><circle cx="13" cy="36" r="5"/><circle cx="33" cy="32" r="5"/></svg></span><span class="name">Musik</span></a></li><li><a href="../fachschaft/?fach=sport" style="--c:#E67E22"><span class="icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="27" r="15"/><path d="M20 6h8M24 6v6M24 27l6-6M37 12l3 3"/></svg></span><span class="name">Sport</span></a></li></ul></div><div class="fg"><div class="fgt">Religion &amp; Ethik</div><ul class="apps small"><li><a href="../fachschaft/?fach=kreligion" style="--c:#6D4C41"><span class="icon"><svg viewBox="0 0 48 48"><path d="M24 6v36M14 16h20"/></svg></span><span class="name">Kath. Religion</span></a></li><li><a href="../fachschaft/?fach=ereligion" style="--c:#4E6A85"><span class="icon"><svg viewBox="0 0 48 48"><path d="M24 8v32M15 17h18"/><circle cx="24" cy="24" r="17"/></svg></span><span class="name">Ev. Religion</span></a></li><li><a href="../fachschaft/?fach=ethik" style="--c:#607D3B"><span class="icon"><svg viewBox="0 0 48 48"><path d="M24 8v32M14 40h20M10 14h28"/><path d="M10 14l-5 12h10zM38 14l-5 12h10z"/></svg></span><span class="name">Ethik</span></a></li></ul></div>
+  <p class="dfoot"><a href="../fachschaft/">Alle Fachschaften in der App</a> · <a href="../fachschaft/Anleitung-Fachschaften.pdf">Anleitung</a></p>
+</dialog>
+
 
 <footer>
   <span>Entwickelt von <b>Thorsten von Plotho-Kettner</b> · Pater-Alois-Grimm-Schule Külsheim</span>
   <span><a href="../apps/">Alle Apps mit Beschreibung und Anleitungen</a></span>
 </footer>
 </div>
+<script>
+(function(){var d=document.getElementById('fsDlg'),o=document.getElementById('fsOpen');
+if(!d||typeof d.showModal!=='function')return; // ohne Dialog-Unterstützung führt der Link direkt zur Fachauswahl
+o.addEventListener('click',function(e){e.preventDefault();d.showModal()});
+document.getElementById('fsClose').onclick=function(){d.close()};
+d.addEventListener('click',function(e){if(e.target===d)d.close()});
+if(location.hash==='#fachschaften')d.showModal();})();
+</script>
 </body>
 </html>
