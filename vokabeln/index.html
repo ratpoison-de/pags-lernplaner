@@ -1001,7 +1001,12 @@ document.addEventListener('keydown',e=>{
   else if(S.turned&&(e.key==='ArrowRight'||e.key==='1'))answer(true);
   else if(S.turned&&(e.key==='ArrowLeft'||e.key==='0'))answer(false);
 });
-if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+if('serviceWorker' in navigator&&location.protocol==='https:'){
+  // neue Version sofort übernehmen: alter Cache wird im Service Worker gelöscht, Seite lädt einmal neu
+  const hadCtrl=!!navigator.serviceWorker.controller;let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadCtrl&&!reloaded&&!S&&!scan.busy){reloaded=true;location.reload();}});
+  navigator.serviceWorker.register('sw.js?v=3',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+}
 window.__vt={DB:()=>DB,parseText,parseOcr};
 render();
 })();
