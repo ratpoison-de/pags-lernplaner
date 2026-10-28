@@ -145,5 +145,5 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 | `fachschaft-deutsch/` | Weiterleitung auf die Fachschaft Deutsch |
 | `supabase/fachschaft.sql` | Gemeinsame Fachschafts-Tabellen, Regeln und Funktionen |
 | `korrektur/` | Korrekturtabelle für Lehrkräfte mit Manifest, Service Worker, Icons und Anleitung (PDF) |
-| `vokabeln/` | PAGS Vokabeltrainer: Vokabeln abfotografieren (Texterkennung im Browser) und mit dem 5-Fächer-System lernen, Daten nur lokal |
+| `vokabeln/` | PAGS Vokabeltrainer: Vokabeln abfotografieren (Texterkennung im Browser) und mit dem 5-Fächer-System lernen, Daten nur lokal; Installation als Android-App (`PAGS-Vokabeltrainer.apk`) oder iPhone-Profil (`PAGS-Vokabeltrainer.mobileconfig`) über `vokabeln/installieren.html` |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |

@@ -261,6 +261,26 @@ details.faq p,details.faq ul{margin:8px 0 0;color:var(--ink-2)}
 <script>
 (function(){
 "use strict";
+/* ================= Android-App: Sprachausgabe über das Handy ================= */
+const ANDROID=!!window.AndroidApp;
+if(ANDROID){
+  const pend={};let n=0,vcache=[];
+  window.__ttsDone=id=>{const u=pend[id];delete pend[id];if(u&&u.onend)u.onend();};
+  window.SpeechSynthesisUtterance=function(t){this.text=t;this.lang='';this.rate=1;this.voice=null;this.onend=null;this.onerror=null;};
+  const ss={
+    speak(u){const id='u'+(++n);pend[id]=u;let ok=false;try{ok=AndroidApp.ttsSpeak(id,u.text,u.lang||'de-DE',u.rate||0.9,u.voice?u.voice.name:'');}catch(e){}if(!ok){delete pend[id];setTimeout(()=>u.onerror&&u.onerror(),0);}},
+    cancel(){try{AndroidApp.ttsStop();}catch(e){}},
+    getVoices(){if(!vcache.length){try{vcache=JSON.parse(AndroidApp.ttsVoices()||'[]');}catch(e){vcache=[];}}return vcache;},
+    addEventListener(){},removeEventListener(){}
+  };
+  try{Object.defineProperty(window,'speechSynthesis',{value:ss,configurable:true});}catch(e){window.speechSynthesis=ss;}
+  window.__androidBack=()=>{
+    if($('#sheet').classList.contains('on')){closeSheet();return true;}
+    if(!$('#session').hidden){if(LS){LS=null;endSession();}else if(S&&S.answered.size&&S.pos<S.queue.length)renderResult(true);else endSession();return true;}
+    if(view!=='start'){go('start');return true;}
+    return false;
+  };
+}
 /* ================= Grundlagen ================= */
 const KEY='pags-vokabeltrainer-v1';
 const OCR_SRC='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
@@ -698,7 +718,7 @@ function startSession(cards,opt){
   $('#session').hidden=false;document.body.style.overflow='hidden';
   renderCard();
 }
-function endSession(){stopSpeech();$('#session').hidden=true;document.body.style.overflow='';S=null;render();}
+function endSession(){stopSpeech();if(ANDROID)try{AndroidApp.keepAwake(false);}catch(e){}$('#session').hidden=true;document.body.style.overflow='';S=null;render();}
 function direction(c){const d=DB.settings.dir;if(d==='mix')return (c.id.charCodeAt(0)+S.pos)%2?'f2d':'d2f';return d;}
 function highlight(ex,word){
   const e=esc(ex);const w=String(word).replace(/^(to|the|a|an|le|la|les|l'|el|los|las|un|une|der|die|das)\s+/i,'').trim();
@@ -770,6 +790,7 @@ function startListen(cards,s){
   if(!('speechSynthesis' in window)){toast('Dieser Browser kann leider nicht vorlesen.');return;}
   const L=LANGS[s.lang]||LANGS.eng;
   LS={cards:shuffle(cards.slice()),i:0,playing:true,L,order:'f2d',phase:-1};
+  if(ANDROID)try{AndroidApp.keepAwake(true);}catch(e){}
   $('#session').hidden=false;document.body.style.overflow='hidden';
   renderListen();playListen();
 }
@@ -829,7 +850,7 @@ function pickVoice(lang){
   if(!VOICES.length)loadVoices();
   const l=lang.toLowerCase().replace('_','-'),p=l.slice(0,2);
   const cands=VOICES.filter(v=>v.lang&&v.lang.toLowerCase().replace('_','-').startsWith(p));
-  return cands.find(v=>v.lang.toLowerCase().replace('_','-')===l&&/google|natural|enhanced|premium/i.test(v.name))||cands.find(v=>v.lang.toLowerCase().replace('_','-')===l)||cands[0]||null;
+  return cands.find(v=>v.lang.toLowerCase().replace('_','-')===l&&v.local===true)||cands.find(v=>v.lang.toLowerCase().replace('_','-')===l&&/google|natural|enhanced|premium/i.test(v.name))||cands.find(v=>v.lang.toLowerCase().replace('_','-')===l)||cands[0]||null;
 }
 function speakText(t){return String(t).replace(/\(([^)]*)\)/g,'$1').replace(/\bsb\b/g,'somebody').replace(/\bsth\b/g,'something').replace(/\bjdn\b/g,'jemanden').replace(/\betw\./g,'etwas').replace(/\/|;/g,', ');}
 // Liste [[Text, Sprache], …] nacheinander vorlesen
@@ -934,7 +955,7 @@ function vMehr(m){
   h+='<details class="faq"><summary>Zweisprachig hören</summary><ul><li>Beim Lernen liest die App die Vorderseite vor und beim Umdrehen die Rückseite – z.&nbsp;B. erst Englisch, dann Deutsch.</li><li>Der Knopf „🇬🇧 + 🇩🇪 anhören“ auf der Rückseite spielt beide Sprachen und den Beispielsatz nacheinander.</li><li>Im Stapel startet „🎧 Anhören“ den Hörmodus: Fremdwort, Übersetzung, Beispielsatz – Karte für Karte, ohne Tippen. Ideal für unterwegs.</li><li>Keine Stimme zu hören? Lautstärke prüfen und unter „Mehr → Stimmen testen“ nachsehen. Fehlt eine Stimme, kann man sie in den Handy-Einstellungen unter „Text-zu-Sprache“ nachladen.</li></ul></details>';
   h+='<details class="faq"><summary>So gelingt das Foto</summary><ul><li>Handy gerade über das Buch halten, Seite flach drücken.</li><li>Helles Licht, kein Schatten vom Handy.</li><li>Nur die Vokabelseite aufs Bild, bei Doppelseiten ein Foto pro Seite.</li><li>Ist das Foto quer, drehe es mit dem Pfeil-Knopf.</li><li>Danach jede Zeile kurz prüfen – die Erkennung ist gut, aber nicht perfekt.</li></ul></details>';
   h+='<details class="faq"><summary>Wie lerne ich am besten?</summary><ul><li>Lieber jeden Tag 10 Minuten als einmal pro Woche eine Stunde.</li><li>Sprich die Wörter laut mit.</li><li>Nutze die Notiz für Eselsbrücken, Artikel und Pluralformen.</li><li>Neue Lektion? 10–15 neue Wörter pro Tag sind genug.</li><li>Vor einem Test: Stapel öffnen und „Alle frei üben“.</li></ul></details>';
-  h+='<details class="faq"><summary>App auf den Startbildschirm legen</summary><p><b>iPhone:</b> In Safari auf „Teilen“ und dann „Zum Home-Bildschirm“.<br><b>Android:</b> Im Chrome-Menü (⋮) auf „App installieren“ oder „Zum Startbildschirm hinzufügen“.</p><p>Danach funktioniert das Lernen auch ohne Internet.</p></details>';
+  h+='<details class="faq"><summary>App auf den Startbildschirm legen</summary><p><b>iPhone:</b> In Safari auf „Teilen“ und dann „Zum Home-Bildschirm“.<br><b>Android:</b> Im Chrome-Menü (⋮) auf „App installieren“ oder „Zum Startbildschirm hinzufügen“.</p><p>Danach funktioniert das Lernen auch ohne Internet.</p>'+(ANDROID?'':'<p><a href="installieren.html" target="_blank" rel="noopener"><b>Als App installieren (Android-APK oder iPhone-Profil) ›</b></a></p>')+'</details>';
   h+='<details class="faq"><summary>Wann sind meine Daten weg?</summary><p>Wenn du die Browserdaten löschst, im privaten Modus surfst oder das Gerät wechselst. Deshalb: Sicherung speichern und auf dem neuen Gerät mit „Sicherung laden“ einspielen.</p></details>';
   h+='<div class="card" style="text-align:center;margin-top:18px"><img src="pags-logo.png" alt="PAGS" width="120" height="60" style="background:#fff;border-radius:8px;padding:4px"><p style="margin:8px 0 0"><b>PAGS Vokabeltrainer</b><br><span class="small muted">Entwickelt von Thorsten von Plotho-Kettner<br>Pater-Alois-Grimm-Schule Külsheim</span></p><p class="small muted">Fehler oder Ideen? Sprich Herrn von Plotho-Kettner an.<br>Texterkennung: Tesseract.js (Apache-2.0)</p></div>';
   m.innerHTML=h;
@@ -945,7 +966,7 @@ function vMehr(m){
   m.querySelectorAll('#setAuto [data-a]').forEach(b=>b.onclick=()=>{st.autoSpeak=b.dataset.a;save();m.querySelectorAll('#setAuto [data-a]').forEach(x=>x.setAttribute('aria-pressed',x===b));});
   m.querySelectorAll('#setRate [data-r]').forEach(b=>b.onclick=()=>{st.rate=+b.dataset.r;save();m.querySelectorAll('#setRate [data-r]').forEach(x=>x.setAttribute('aria-pressed',x===b));});
   m.querySelector('#setEx').onchange=e=>{st.speakEx=e.target.checked;save();};
-  const ti=m.querySelector('#ttsInfo'),showVoices=()=>{if(!('speechSynthesis' in window)){ti.textContent='Dieser Browser kann leider nicht vorlesen.';return;}const en=pickVoice('en-GB'),de=pickVoice('de-DE');ti.textContent='Englische Stimme: '+(en?en.name:'keine gefunden')+' · Deutsche Stimme: '+(de?de.name:'keine gefunden');};
+  const ti=m.querySelector('#ttsInfo'),showVoices=()=>{if(!('speechSynthesis' in window)){ti.textContent='Dieser Browser kann leider nicht vorlesen.';return;}const en=pickVoice('en-GB'),de=pickVoice('de-DE');ti.innerHTML=esc('Englische Stimme: '+(en?en.name:'keine gefunden')+' · Deutsche Stimme: '+(de?de.name:'keine gefunden'))+(ANDROID?' <button class="linkbtn small" id="ttsSet">Stimmen installieren/ändern</button>':'');const tb=ti.querySelector('#ttsSet');tb&&(tb.onclick=()=>{try{AndroidApp.ttsSettings();}catch(e){}});};
   showVoices();setTimeout(showVoices,800);
   m.querySelector('#ttsTest').onclick=()=>sayQ([['Hello! Let\'s learn some new words.','en-GB'],['Hallo! Lass uns neue Wörter lernen.',DE_TTS]]);
   m.querySelectorAll('[data-int]').forEach(i=>i.onchange=()=>{const v=Math.max(1,Math.min(365,parseInt(i.value)||1));i.value=v;st.intervals[+i.dataset.int]=v;save();toast('Gespeichert.');});
@@ -955,7 +976,9 @@ function vMehr(m){
   m.querySelector('#bCsv').onclick=exportCsv;
   m.querySelector('#bWipe').onclick=()=>confirmBox('Alle Stapel, Karten und dein Lernverlauf werden von diesem Gerät gelöscht. Das lässt sich nicht rückgängig machen.','Alles löschen',()=>{DB={v:1,stacks:[],cards:[],log:{},settings:Object.assign({},DEFAULT_SETTINGS)};save();go('start');toast('Alles gelöscht.');});
 }
-function download(name,text,type){const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);}
+function download(name,text,type){
+  if(ANDROID){let msg='';try{msg=AndroidApp.saveFile(name,text,type);}catch(e){}setTimeout(()=>toast(msg||'Speichern hat nicht geklappt.'),30);return;}
+  const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);}
 function exportJson(){download('vokabeln-sicherung-'+today()+'.json',JSON.stringify(DB,null,1),'application/json');DB.settings.lastBackup=today();save();toast('Sicherung gespeichert.');}
 function exportCsv(){
   const q=s=>'"'+String(s||'').replace(/"/g,'""')+'"';
@@ -1001,7 +1024,7 @@ document.addEventListener('keydown',e=>{
   else if(S.turned&&(e.key==='ArrowRight'||e.key==='1'))answer(true);
   else if(S.turned&&(e.key==='ArrowLeft'||e.key==='0'))answer(false);
 });
-if('serviceWorker' in navigator&&location.protocol==='https:'){
+if(!ANDROID&&'serviceWorker' in navigator&&location.protocol==='https:'){
   // neue Version sofort übernehmen: alter Cache wird im Service Worker gelöscht, Seite lädt einmal neu
   const hadCtrl=!!navigator.serviceWorker.controller;let reloaded=false;
   navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadCtrl&&!reloaded&&!S&&!scan.busy){reloaded=true;location.reload();}});
