@@ -37,6 +37,17 @@ Unter **Authentication → URL Configuration**:
 ### 4. App mit der Datenbank verbinden
 Unter **Project Settings → API** die **Project URL** und den **anon public**-Schlüssel kopieren und in [`config.js`](config.js) eintragen. Committen, fertig. Nach etwa einer Minute ist die App mit Anmeldung online.
 
+## Wochenstapel
+
+**https://ratpoison-de.github.io/pags-lernplaner/wochenstapel/**
+
+Minimalistische Wochen-To-do-App: die nächsten sieben Tage untereinander, Aufgaben abhaken, verschieben, wiederholen, per Ziehen umsortieren. Unerledigtes wandert automatisch nach „Heute“.
+
+- Gleiche Konten wie der Lernplaner (Anmeldung im einen gilt auch im anderen).
+- Daten pro Person in der Tabelle `wochenstapel` ([`supabase/wochenstapel.sql`](supabase/wochenstapel.sql)), nur für die eigene Person lesbar.
+- Wird ein Konto über die Lehrkraft-Seite gelöscht, verschwinden auch die Wochenstapel-Daten.
+- Über „Zum Startbildschirm hinzufügen“ wie eine App nutzbar.
+
 ## Lehrkraft-Seite
 
 **https://ratpoison-de.github.io/pags-lernplaner/lehrkraft.html**
@@ -95,4 +106,6 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 | `lehrkraft.html` | Bereich für Lehrkräfte |
 | `supabase/schema.sql` | Tabelle, Zugriffsregeln, Konto-Löschfunktion |
 | `supabase/admin.sql` | Lehrkraft-Rechte und -Funktionen |
+| `wochenstapel/` | Wochenstapel-App mit Manifest und Icons |
+| `supabase/wochenstapel.sql` | Tabelle und Zugriffsregeln für den Wochenstapel |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |
