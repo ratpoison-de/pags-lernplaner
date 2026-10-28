@@ -74,6 +74,18 @@ Gemeinsame App der Fachschaft Deutsch. Anders als Lernplaner und Wochenstapel si
 - Datenbank: [`supabase/fachschaft.sql`](supabase/fachschaft.sql) (Tabellen `fs_codes`, `fs_mitglieder`, `fs_eintraege`). Wer etwas angelegt oder zuletzt geändert hat, setzt die Datenbank selbst.
 - Die Tabellen haben eine Spalte `fachschaft`. Eine weitere Fachschaft (z. B. `englisch`) braucht nur einen Eintrag in `fs_codes` und eine Kopie des Ordners mit angepasstem `FS`.
 
+## Korrekturtabelle (für Lehrkräfte)
+
+**https://ratpoison-de.github.io/pags-lernplaner/korrektur/** · [Anleitung mit Bildern (PDF)](korrektur/anleitung.pdf)
+
+Web-Fassung der Excel-Korrekturtabelle mit allen vier Blättern und Erweiterungen:
+
+- **Notenschlüssel** (Blätter „1-8“ und „9-10“): linear mit einstellbarer 50-%-Note, Prozent-Umrechnung oder frei einstellbarer Prozent-Schlüssel; Schnellabfrage, Notengrenzen, Tendenznoten, Druck und Excel-Export.
+- **Korrektur:** Punkte je Aufgabe, Note sofort, Notenspiegel, Durchschnitt, Aufgabenanalyse, Drittel-Hinweis und einstellbare Prüfgrenze; Übertragung in die Leistungsübersicht per Knopfdruck.
+- **Leistungsübersicht** (Blätter „LEB“ und „LEB Englisch“): gewichtete Noten (Eingabe auch als 2-, 2+, 2-3) bzw. Kompetenzen in Prozent (Listening, Reading, Writing, Mediation, Sprechen).
+- **Import** der bisherigen Excel-Datei, **Sicherung** als JSON, Export als .xlsx, offline nutzbar.
+- **Keine Anmeldung, keine Cloud:** Namen und Noten bleiben im Browser des Geräts (localStorage). Für ein zweites Gerät die Sicherung herunterladen und dort laden.
+
 ## Lehrkraft-Seite
 
 **https://ratpoison-de.github.io/pags-lernplaner/lehrkraft.html**
@@ -138,4 +150,5 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 | `supabase/lernbegleiter.sql` | Tabelle und Zugriffsregeln für den Lernbegleiter |
 | `fachschaft-deutsch/` | App der Fachschaft Deutsch mit Manifest, Icons und Anleitung |
 | `supabase/fachschaft.sql` | Gemeinsame Fachschafts-Tabellen, Regeln und Funktionen |
+| `korrektur/` | Korrekturtabelle für Lehrkräfte mit Manifest, Service Worker, Icons und Anleitung (PDF) |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |
