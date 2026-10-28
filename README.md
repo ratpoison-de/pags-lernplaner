@@ -63,6 +63,17 @@ Wochenplanung für Lehrkräfte nach dem Prinzip des Wochenstapels. Jeder Tag hat
 - Gleiche Konten wie Lernplaner und Wochenstapel, eigene Daten in der Tabelle `lernbegleiter` ([`supabase/lernbegleiter.sql`](supabase/lernbegleiter.sql)).
 - Über „Zum Startbildschirm hinzufügen“ wie eine App nutzbar.
 
+## Fachschaft Deutsch (für Lehrkräfte)
+
+**https://ratpoison-de.github.io/pags-lernplaner/fachschaft-deutsch/** · Demo ohne Anmeldung: [`?demo`](https://ratpoison-de.github.io/pags-lernplaner/fachschaft-deutsch/?demo) · [Anleitung (PDF)](fachschaft-deutsch/Anleitung-Fachschaft-Deutsch.pdf)
+
+Gemeinsame App der Fachschaft Deutsch. Anders als Lernplaner und Wochenstapel sind die Daten **geteilt**: Alle Mitglieder sehen und bearbeiten dieselben Einträge.
+
+- Bereiche: Übersicht mit Pinnwand, Termine & Fristen (Export als .ics), Aufgaben, Materialpool (Links, Filter nach Klasse 5–10, Niveau G/M/E, Bereich, Art), Lektüren mit Ausleihe, Jahresplanung je Klassenstufe mit Grammatikrahmen, Protokolle mit Beschlüssen, Vereinbarungen, Notenrechner mit gemeinsamem Notenschlüssel, Mitgliederverwaltung, Suche über alles, JSON-Sicherung.
+- Beitritt: mit dem Lernplaner-Konto anmelden (oder in der App „Neues Konto“), dann Name und **Fachschafts-Code** eingeben. Die Leitung ändert den Code in der App unter „Fachschaft“.
+- Datenbank: [`supabase/fachschaft.sql`](supabase/fachschaft.sql) (Tabellen `fs_codes`, `fs_mitglieder`, `fs_eintraege`). Wer etwas angelegt oder zuletzt geändert hat, setzt die Datenbank selbst.
+- Die Tabellen haben eine Spalte `fachschaft`. Eine weitere Fachschaft (z. B. `englisch`) braucht nur einen Eintrag in `fs_codes` und eine Kopie des Ordners mit angepasstem `FS`.
+
 ## Lehrkraft-Seite
 
 **https://ratpoison-de.github.io/pags-lernplaner/lehrkraft.html**
@@ -125,4 +136,6 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 | `supabase/wochenstapel.sql` | Tabelle und Zugriffsregeln für den Wochenstapel |
 | `lernbegleiter/` | Lernbegleiter-App für Lehrkräfte mit Manifest und Icons |
 | `supabase/lernbegleiter.sql` | Tabelle und Zugriffsregeln für den Lernbegleiter |
+| `fachschaft-deutsch/` | App der Fachschaft Deutsch mit Manifest, Icons und Anleitung |
+| `supabase/fachschaft.sql` | Gemeinsame Fachschafts-Tabellen, Regeln und Funktionen |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |
