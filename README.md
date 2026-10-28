@@ -67,28 +67,17 @@ Wochenplanung für Lehrkräfte nach dem Prinzip des Wochenstapels. Jeder Tag hat
 - Gleiche Konten wie Lernplaner und Wochenstapel, eigene Daten in der Tabelle `lernbegleiter` ([`supabase/lernbegleiter.sql`](supabase/lernbegleiter.sql)).
 - Über „Zum Startbildschirm hinzufügen“ wie eine App nutzbar.
 
-## Fachschaft Deutsch (für Lehrkräfte)
+## Fachschaften (für Lehrkräfte, alle Fächer)
 
-**https://ratpoison-de.github.io/pags-lernplaner/fachschaft-deutsch/** · Demo ohne Anmeldung: [`?demo`](https://ratpoison-de.github.io/pags-lernplaner/fachschaft-deutsch/?demo) · [Anleitung (PDF)](fachschaft-deutsch/Anleitung-Fachschaft-Deutsch.pdf)
+**https://ratpoison-de.github.io/pags-lernplaner/fachschaft/** · Demo z. B. [`?fach=mathematik&demo`](https://ratpoison-de.github.io/pags-lernplaner/fachschaft/?fach=mathematik&demo) · [Anleitung](fachschaft/Anleitung-Fachschaften.pdf) · [Leitfaden für Fachschaftsleitungen](fachschaft/Leitfaden-Fachschaftsleitung.pdf) · Starterkarten je Fach im Ordner `fachschaft/starterkarten/`
 
-Gemeinsame App der Fachschaft Deutsch. Anders als Lernplaner und Wochenstapel sind die Daten **geteilt**: Alle Mitglieder sehen und bearbeiten dieselben Einträge.
+Eine App für alle Fachschaften der Gemeinschaftsschule (Sekundarstufe I, Bildungsplan 2016): Deutsch, Englisch, Französisch, Mathematik, BNT, Biologie, Chemie, Physik, Informatik, Geographie, Geschichte, Gemeinschaftskunde, WBS, AES, Technik, IMP, NwT, Bildende Kunst, Musik, Sport, Kath. und Ev. Religion, Ethik. Das Fach steht in der Adresse (`?fach=…`), ohne Fach erscheint die Auswahl.
 
-- Bereiche: Übersicht mit Pinnwand, Termine & Fristen (Export als .ics), Aufgaben, Materialpool (Links, Filter nach Klasse 5–10, Niveau G/M/E, Bereich, Art), Lektüren mit Ausleihe, Jahresplanung je Klassenstufe mit Grammatikrahmen, Protokolle mit Beschlüssen, Vereinbarungen, Notenrechner mit gemeinsamem Notenschlüssel, Mitgliederverwaltung, Suche über alles, JSON-Sicherung.
-- Beitritt: mit dem Lernplaner-Konto anmelden (oder in der App „Neues Konto“), dann Name und **Fachschafts-Code** eingeben. Die Leitung ändert den Code in der App unter „Fachschaft“.
-- Datenbank: [`supabase/fachschaft.sql`](supabase/fachschaft.sql) (Tabellen `fs_codes`, `fs_mitglieder`, `fs_eintraege`). Wer etwas angelegt oder zuletzt geändert hat, setzt die Datenbank selbst.
-- Die Tabellen haben eine Spalte `fachschaft`. Eine weitere Fachschaft (z. B. `englisch`) braucht nur einen Eintrag in `fs_codes` und eine Kopie des Ordners mit angepasstem `FS`.
-
-## Korrekturtabelle (für Lehrkräfte)
-
-**https://ratpoison-de.github.io/pags-lernplaner/korrektur/** · [Anleitung mit Bildern (PDF)](korrektur/anleitung.pdf)
-
-Web-Fassung der Excel-Korrekturtabelle mit allen vier Blättern und Erweiterungen:
-
-- **Notenschlüssel** (Blätter „1-8“ und „9-10“): linear mit einstellbarer 50-%-Note, Prozent-Umrechnung oder frei einstellbarer Prozent-Schlüssel; Schnellabfrage, Notengrenzen, Tendenznoten, Druck und Excel-Export.
-- **Korrektur:** Punkte je Aufgabe, Note sofort, Notenspiegel, Durchschnitt, Aufgabenanalyse, Drittel-Hinweis und einstellbare Prüfgrenze; Übertragung in die Leistungsübersicht per Knopfdruck.
-- **Leistungsübersicht** (Blätter „LEB“ und „LEB Englisch“): gewichtete Noten (Eingabe auch als 2-, 2+, 2-3) bzw. Kompetenzen in Prozent (Listening, Reading, Writing, Mediation, Sprechen).
-- **Import** der bisherigen Excel-Datei, **Sicherung** als JSON, Export als .xlsx, offline nutzbar.
-- **Keine Anmeldung, keine Cloud:** Namen und Noten bleiben im Browser des Geräts (localStorage). Für ein zweites Gerät die Sicherung herunterladen und dort laden.
+- Daten sind je Fachschaft **geteilt**: Alle Mitglieder sehen und bearbeiten dieselben Einträge.
+- Bereiche: Übersicht mit Pinnwand, Termine (Export .ics), Aufgaben, Materialpool (Filter nach Klasse, Niveau G/M/E, fachspezifischen Bereichen und Art), Bestand mit Ausleihe (Lektüren, Ausstattung, Instrumente, Sportgeräte), Jahresplanung je Klassenstufe, Protokolle mit Beschlüssen, Vereinbarungen, Notenrechner, Mitglieder, Suche, JSON-Sicherung.
+- Beitritt: mit dem Lernplaner-Konto anmelden (oder in der App „Neues Konto“), dann Name und **Code der jeweiligen Fachschaft**. Jede Fachschaft hat einen eigenen Code; die Leitung ändert ihn in der App.
+- Datenbank: [`supabase/fachschaft.sql`](supabase/fachschaft.sql). Neues Fach: Eintrag in `fs_codes` und in `SUBJECTS` in `fachschaft/index.html`.
+- `fachschaft-deutsch/` leitet auf `fachschaft/?fach=deutsch` weiter.
 
 ## Lehrkraft-Seite
 
@@ -152,7 +141,8 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 | `supabase/wochenstapel.sql` | Tabelle und Zugriffsregeln für den Wochenstapel |
 | `lernbegleiter/` | Lernbegleiter-App für Lehrkräfte mit Manifest und Icons |
 | `supabase/lernbegleiter.sql` | Tabelle und Zugriffsregeln für den Lernbegleiter |
-| `fachschaft-deutsch/` | App der Fachschaft Deutsch mit Manifest, Icons und Anleitung |
+| `fachschaft/` | Fachschafts-App für alle Fächer mit Anleitung, Leitfaden und Starterkarten |
+| `fachschaft-deutsch/` | Weiterleitung auf die Fachschaft Deutsch |
 | `supabase/fachschaft.sql` | Gemeinsame Fachschafts-Tabellen, Regeln und Funktionen |
 | `korrektur/` | Korrekturtabelle für Lehrkräfte mit Manifest, Service Worker, Icons und Anleitung (PDF) |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |

@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fachschaften PAGS</title>
+<meta name="description" content="Gemeinsame App der Fachschaften an der Pater-Alois-Grimm-Schule Külsheim (Gemeinschaftsschule)">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Fachschaften – gleiche Gestaltung wie Lernbegleiter und Wochenstapel: PAGS-Kopf, Karten, Entwickler-Fußzeile */
+:root{
+  --bg:#F2F2F0; --card:#FFFFFF; --ink:#2B2B2C; --mute:#6E6E72; --line:#DCDCDA; --chip:#E8E8E6;
+  --accent:#AD120D; --accent-ink:#FFFFFF; --done:#A9A9A7; --scrim:rgba(24,24,26,.4);
+  --danger:#AD120D; --shadow:0 12px 32px rgba(20,20,22,.18); --logo-bg:#FFFFFF; --star:#D99A00;
+  --s1:#3B6EA8; --s2:#7A5AA6; --s3:#2E8B6A; --s4:#AD120D; --s5:#B8650F;
+  --f-display:"Archivo","Arial Black","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161618; --card:#212124; --ink:#ECECEE; --mute:#9A9A9F; --line:#2E2E32; --chip:#29292D;
+  --accent:#E24A40; --accent-ink:#1A0605; --done:#5C5C61; --scrim:rgba(0,0,0,.6);
+  --danger:#FF6B61; --shadow:0 12px 32px rgba(0,0,0,.55); --logo-bg:#F4F4F2; --star:#F2B732;
+  --s1:#6E9BD1; --s2:#A88BD1; --s3:#5DBF98; --s4:#E24A40; --s5:#E39A4B; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#161618; --card:#212124; --ink:#ECECEE; --mute:#9A9A9F; --line:#2E2E32; --chip:#29292D;
+  --accent:#E24A40; --accent-ink:#1A0605; --done:#5C5C61; --scrim:rgba(0,0,0,.6);
+  --danger:#FF6B61; --shadow:0 12px 32px rgba(0,0,0,.55); --logo-bg:#F4F4F2; --star:#F2B732;
+  --s1:#6E9BD1; --s2:#A88BD1; --s3:#5DBF98; --s4:#E24A40; --s5:#E39A4B; color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.4;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+.wrap{max-width:820px;margin:0 auto}
+
+/* Kopf */
+.masthead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px 6px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.logo{display:block;background:var(--logo-bg);border-radius:10px;padding:7px 11px;line-height:0;flex:none}
+.logo img{height:44px;width:auto}
+.appname{font-family:var(--f-display);font-weight:800;font-size:15px;line-height:1.15;text-transform:uppercase;letter-spacing:.01em;min-width:0}
+.appname small{display:block;font-family:var(--f-body);font-weight:600;font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--mute)}
+.headright{display:flex;align-items:center;gap:2px}
+.iconbtn{width:44px;height:44px;border-radius:22px;display:grid;place-items:center;color:var(--mute)}
+.iconbtn:hover,.iconbtn:active{background:var(--chip);color:var(--ink)}
+.iconbtn svg{width:22px;height:22px}
+@media (max-width:380px){.logo img{height:34px}.appname{font-size:13px}}
+
+/* Fächer-Icons & Auswahl */
+.sicon{--sz:44px;flex:none;width:var(--sz);height:var(--sz);border-radius:calc(var(--sz)*.29);background:var(--c);display:grid;place-items:center}
+.sicon svg{width:62%;height:62%;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.picker{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px 10px}
+@media (min-width:600px){.picker{grid-template-columns:repeat(5,1fr)}}
+.picker a{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:var(--ink);text-align:center;padding:4px 2px;border-radius:14px;position:relative}
+.picker a:hover .sicon{transform:translateY(-2px)}
+.picker .sicon{transition:transform .15s;box-shadow:0 8px 18px -10px var(--c)}
+.picker b{font-size:14.5px;line-height:1.2;text-wrap:balance}
+.picker .mem{position:absolute;top:-4px;right:calc(50% - 40px);background:var(--s3);color:#fff;border-radius:999px;width:22px;height:22px;display:grid;place-items:center;border:2px solid var(--bg)}
+.picker .mem svg{width:12px;height:12px}
+.gtitle{font-family:var(--f-display);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:30px 0 14px}
+.brand .sicon{--sz:38px}
+@media (max-width:430px){.brand .sicon{display:none}}
+/* Navigation */
+.nav{position:sticky;top:0;z-index:20;background:var(--bg);margin:0 -16px;padding:8px 16px 10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid transparent}
+.nav::-webkit-scrollbar{display:none}
+.nav.stuck{border-bottom-color:var(--line)}
+.nav a{flex:none;text-decoration:none;padding:8px 13px;border-radius:999px;background:var(--chip);font-weight:700;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.nav .badge{background:var(--accent);color:var(--accent-ink);border-radius:999px;font-size:12px;padding:0 6px;min-width:19px;text-align:center;font-variant-numeric:tabular-nums}
+
+.demo{margin-top:10px;background:var(--chip);border-left:4px solid var(--s5);border-radius:10px;padding:10px 12px;font-size:15px}
+.demo b{font-weight:700}
+
+/* Seitenkopf */
+.intro{padding-block:18px 4px}
+.eyerow{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.eyebrow{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-variant-numeric:tabular-nums}
+.status{font-size:13px;font-weight:600;color:var(--mute);white-space:nowrap}
+.status.warn{color:var(--accent)}
+h1{margin:6px 0 0;font-family:var(--f-display);font-size:34px;line-height:1.02;font-weight:900;letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance}
+.lead{color:var(--mute);margin:8px 0 0;max-width:60ch}
+h2{margin:0;font-family:var(--f-display);font-size:19px;font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+.sec{padding-top:26px}
+.sechead{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.sechead .more{margin-left:auto;font-size:14px;font-weight:700;color:var(--mute);text-decoration:none}
+.sechead .more:hover{color:var(--ink)}
+.count{font-size:14px;font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums}
+
+/* Werkzeugleiste & Filter */
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.search{flex:1 1 220px;display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:0 12px}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;outline:none;background:none;padding:10px 0;width:100%;font-size:16px}
+.search svg{width:18px;height:18px;color:var(--mute);flex:none}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.fchip{padding:6px 11px;border-radius:999px;background:var(--chip);font-weight:700;font-size:14px}
+.fchip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.fsel{padding:8px 10px;border-radius:10px;background:var(--chip);border:0;font-weight:600;font-size:14px;max-width:100%}
+.btnsm{padding:8px 12px;border-radius:10px;background:var(--chip);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btnsm:hover{background:var(--line)}
+.btnsm svg{width:16px;height:16px}
+.btnsm.ink{background:var(--ink);color:var(--bg)}
+
+/* Karten */
+.list{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--card);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;position:relative}
+.card:hover{box-shadow:0 0 0 2px var(--line)}
+.card .body{flex:1;min-width:0}
+.card .t{font-weight:700;overflow-wrap:anywhere}
+.card .d{color:var(--mute);font-size:15px;margin-top:2px;overflow-wrap:anywhere;white-space:pre-line}
+.card .by{color:var(--mute);font-size:13px;margin-top:6px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tag{font-size:12.5px;font-weight:700;color:var(--mute);background:var(--chip);border-radius:6px;padding:1px 7px;white-space:nowrap}
+.tag.c{color:#fff;background:var(--tc)}
+.tag.warn{color:var(--accent);background:transparent;box-shadow:inset 0 0 0 1.5px var(--accent)}
+.tag.ok{color:var(--s3);background:transparent;box-shadow:inset 0 0 0 1.5px var(--s3)}
+.datebox{flex:none;width:52px;text-align:center;border-radius:10px;background:var(--chip);padding:5px 0 6px;line-height:1.05;border-top:4px solid var(--tc,var(--mute))}
+.datebox b{display:block;font-family:var(--f-display);font-size:22px;font-weight:900}
+.datebox span{font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase}
+.check{flex:none;width:26px;height:26px;border-radius:13px;border:2px solid var(--line);display:grid;place-items:center;margin-top:1px}
+.check:hover{border-color:var(--accent)}
+.check svg{opacity:0;width:14px;height:14px}
+.card.done .t{color:var(--done);text-decoration:line-through}
+.card.done .check{background:var(--accent);border-color:var(--accent)}
+.card.done .check svg{opacity:1}
+.card .side{flex:none;display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.pin{box-shadow:inset 4px 0 0 var(--star)}
+.empty{color:var(--mute);background:var(--card);border-radius:14px;padding:18px 16px;font-size:15px;border:2px dashed var(--line)}
+.empty b{color:var(--ink)}
+.month{font-family:var(--f-display);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:18px 0 8px}
+.month:first-child{margin-top:4px}
+
+/* Übersicht */
+.grid{display:grid;grid-template-columns:1fr;gap:6px 22px}
+@media (min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.stat{background:var(--card);border-radius:14px;padding:12px;text-decoration:none;display:block}
+.stat b{display:block;font-family:var(--f-display);font-size:28px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.stat span{font-size:13px;font-weight:700;color:var(--mute)}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* Planung */
+.seg{display:flex;background:var(--chip);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{flex:1 0 auto;white-space:nowrap;padding:8px 10px;border-radius:8px;font-size:15px;font-weight:700;color:var(--mute);min-width:44px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.unit{background:var(--card);border-radius:14px;padding:12px 14px 12px 12px;display:flex;gap:12px;cursor:pointer}
+.unit:hover{box-shadow:0 0 0 2px var(--line)}
+.unit .nr{flex:none;width:34px;height:34px;border-radius:17px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--f-display);font-weight:900}
+.unit .gr{font-size:14px;margin-top:6px}
+.unit .gr b{color:var(--s2)}
+
+/* Notenrechner */
+.calc{background:var(--card);border-radius:16px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+.calc .field input{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.result{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding-top:6px}
+.result .note{font-family:var(--f-display);font-size:64px;font-weight:900;line-height:.9;color:var(--accent);min-width:64px;text-align:center}
+.result .pct{color:var(--mute);font-weight:600}
+table.keys{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-variant-numeric:tabular-nums}
+table.keys th,table.keys td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:15px}
+table.keys th{font-family:var(--f-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+table.keys tr:last-child td{border-bottom:0}
+table.keys tr.hit td{background:var(--chip);font-weight:700}
+
+/* Mitglieder */
+.member{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:14px;padding:10px 12px}
+.avatar{flex:none;width:38px;height:38px;border-radius:19px;background:var(--chip);display:grid;place-items:center;font-weight:800;font-family:var(--f-display);font-size:14px}
+.member .body{flex:1;min-width:0}
+.member .t{font-weight:700}
+.member .d{font-size:13px;color:var(--mute)}
+.setting{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;background:var(--card);border-radius:12px;margin-top:8px;width:100%;text-align:left;font-weight:600}
+.setting small{display:block;font-weight:400;color:var(--mute);font-size:14px;margin-top:2px}
+.setting .chev{color:var(--mute)}
+.hint{background:var(--card);border-radius:14px;padding:14px 16px;font-size:15px;color:var(--mute);margin-top:10px}
+.hint b{color:var(--ink)}
+
+/* Plus-Knopf */
+.fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;height:56px;padding:0 20px 0 16px;border-radius:28px;background:var(--accent);color:var(--accent-ink);font-weight:800;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+.fab svg{width:22px;height:22px}
+
+/* Fußzeile */
+.foot{margin-top:56px;padding-block:20px 100px;border-top:1px solid var(--line);font-size:14px;color:var(--mute);display:flex;flex-direction:column;gap:4px}
+.foot strong{color:var(--ink);font-weight:700}
+
+/* Sheet & Formulare */
+.scrim{position:fixed;inset:0;background:var(--scrim);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:640px;margin:0 auto;background:var(--bg);border-radius:20px 20px 0 0;
+  padding:10px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  transform:translateY(calc(100% + 60px));visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility 0s .26s;
+  max-height:90vh;overflow:auto;box-shadow:var(--shadow)}
+.sheet.on{transform:none;visibility:visible;transition:transform .26s cubic-bezier(.2,.8,.2,1)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 12px}
+.shtitle{font-family:var(--f-display);font-size:22px;font-weight:900;text-transform:uppercase;margin:0 0 6px}
+.form{display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.field>.lab{font-weight:700;font-size:15px}
+.field input,.field textarea,.field select{padding:11px 13px;border:2px solid var(--line);border-radius:12px;background:var(--card);outline:none;font-size:17px;width:100%}
+.field textarea{min-height:90px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+.field small{color:var(--mute);font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:8px 13px;border-radius:10px;background:var(--chip);font-size:15px;font-weight:700;min-width:44px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.cbx{display:flex;align-items:center;gap:10px;font-weight:600;padding:4px 0}
+.cbx input{width:22px;height:22px;accent-color:var(--accent)}
+.row{display:flex;gap:10px;margin-top:8px}
+.btn{flex:1;padding:14px;border-radius:12px;font-weight:700;background:var(--chip);text-align:center;text-decoration:none}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.danger{color:var(--danger)}
+.btn:disabled{opacity:.6}
+.meta{font-size:13px;color:var(--mute);margin-top:4px}
+.lmsg{min-height:1.2em;margin:0;font-weight:600;color:var(--accent)}
+.prose{background:var(--card);border-radius:14px;padding:14px 16px;white-space:pre-line;overflow-wrap:anywhere}
+.prose+.prose{margin-top:8px}
+.blist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.blist li{background:var(--card);border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start}
+.blist li span{flex:1}
+.label{font-family:var(--f-display);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:16px 0 8px}
+
+/* Anmeldung */
+.login{max-width:420px;margin:0 auto;padding-block:20px 40px;display:flex;flex-direction:column;gap:14px}
+.lseg{display:flex;background:var(--chip);border-radius:10px;padding:3px}
+.lseg button{flex:1;padding:10px 4px;border-radius:8px;font-weight:700;color:var(--mute)}
+.lseg button[aria-pressed="true"]{background:var(--card);color:var(--ink)}
+.note-s{font-size:14px;color:var(--mute);margin:0}
+.bigbtn{padding:14px;border-radius:12px;font-weight:800;background:var(--ink);color:var(--bg);font-size:17px;width:100%}
+.bigbtn:disabled{opacity:.6}
+.ghostbtn{padding:12px;border-radius:12px;font-weight:700;background:var(--chip);width:100%;text-align:center;text-decoration:none;display:block}
+
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;background:var(--ink);color:var(--bg);
+  padding:12px 18px;border-radius:12px;font-weight:600;font-size:15px;z-index:80;transition:all .25s;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast button{color:var(--accent);font-weight:800;margin-left:12px;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+@media print{
+  body{background:#fff;color:#000;font-size:12pt}
+  .nav,.fab,.headright,.tools,.fchips,.toast,.scrim,.demo,.noprint,.foot{display:none!important}
+  .card,.unit,.prose,.blist li,table.keys{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+  body.printsheet .wrap{display:none}
+  body.printsheet .sheet{position:static;transform:none;visibility:visible;box-shadow:none;max-height:none;overflow:visible;max-width:none;padding:0}
+  body.printsheet .grab,body.printsheet .row{display:none}
+}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#383838">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="../config.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand"><a class="logo" href="https://pags-kuelsheim.de" target="_blank" rel="noopener"><img src="data:image/png;base64,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" alt="PAGS Gemeinschaftsschule Külsheim" width="92" height="44"></a><span class="appname" id="appname">Fachschaften<small>Pater-Alois-Grimm-Schule Külsheim</small></span></div>
+    <div class="headright">
+      <a class="iconbtn" id="btnPick" href="./" aria-label="Fachschaft wechseln" title="Fachschaft wechseln" hidden><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg></a>
+      <button class="iconbtn" id="btnSearch" aria-label="Suchen" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+    </div>
+  </header>
+  <nav class="nav" id="nav" aria-label="Bereiche" hidden></nav>
+  <div id="demoBanner" hidden></div>
+  <div id="loginView" hidden></div>
+  <main id="main" hidden></main>
+  <footer class="foot">
+    <span>Entwickelt von <strong>Thorsten von Plotho-Kettner</strong></span>
+    <span><span id="footFach">Fachschaften</span> · Pater-Alois-Grimm-Schule Külsheim · gleiches Konto wie im <a href="../">PAGS Lernplaner</a> und in der <a href="../lernbegleiter/">Lernbegleiter-App</a></span>
+    <span><a href="Anleitung-Fachschaften.pdf" target="_blank" rel="noopener">Anleitung (PDF)</a> · <a href="Leitfaden-Fachschaftsleitung.pdf" target="_blank" rel="noopener">Leitfaden für Fachschaftsleitungen</a> · <a id="footDemo" href="?fach=deutsch&amp;demo">Demo ausprobieren</a> · <a href="./">Alle Fachschaften</a></span>
+  </footer>
+</div>
+<button class="fab" id="fab" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="fabTxt">Neu</span></button>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- Grundlagen ---------- */
+const QS=new URLSearchParams(location.search);
+/* ---------- Fächer der Gemeinschaftsschule (Bildungsplan 2016, Sekundarstufe I) ---------- */
+const K5=['5','6','7','8','9','10'],K7=['7','8','9','10'],K8=['8','9','10'];
+const BS_LIT={v:'Lektüren',s:'Lektüre',d:'Klassensätze im Überblick: was es gibt, wo es steht und wer es gerade hat.',a:'Autorin / Autor'};
+const BS_MAT={v:'Ausstattung',s:'Ausstattung',d:'Geräte, Klassensätze und Sammlungen: was es gibt, wo es steht und wer es gerade hat.',a:'Hersteller / Verlag'};
+const SUBJECTS=[
+ {k:'deutsch',n:'Deutsch',g:'Sprachen',c:'#2E6B5E',kl:K5,sp:'Grammatikrahmen',bs:BS_LIT,
+  ber:['Sprechen und Zuhören','Schreiben','Lesen und Literatur','Sach- und Gebrauchstexte','Medien','Grammatik und Sprachgebrauch','Rechtschreibung','Abschlussprüfung'],
+  i:'<path d="M24 13c-4-3-10-4-16-3v26c6-1 12 0 16 3 4-3 10-4 16-3V10c-6-1-12 0-16 3z"/><path d="M24 13v26"/>'},
+ {k:'englisch',n:'Englisch',g:'Sprachen',c:'#1B2A6B',kl:K5,sp:'Grammatik / Wortschatz',bs:{v:'Lektüren & Medien',s:'Titel',d:'Lektüren, Readers und Klassensätze: was es gibt, wo es steht und wer es gerade hat.',a:'Autorin / Verlag'},
+  ber:['Hör- und Hörsehverstehen','Leseverstehen','Sprechen','Schreiben','Sprachmittlung','Wortschatz','Grammatik','Interkulturelle Kompetenz','Kommunikationsprüfung','Abschlussprüfung'],
+  i:'<path d="M8 12h24a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H19l-7 6v-6H8a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/><text x="20" y="27" font-size="12" font-weight="800" fill="#fff" stroke="none" text-anchor="middle" font-family="Arial">EN</text>'},
+ {k:'franzoesisch',n:'Französisch',g:'Sprachen',c:'#3B6EA8',kl:['6','7','8','9','10'],sp:'Grammatik / Wortschatz',bs:{v:'Lektüren & Medien',s:'Titel',d:'Lektüren, Readers und Klassensätze: was es gibt, wo es steht und wer es gerade hat.',a:'Autorin / Verlag'},
+  ber:['Hör- und Hörsehverstehen','Leseverstehen','Sprechen','Schreiben','Sprachmittlung','Wortschatz','Grammatik','Interkulturelle Kompetenz','DELF / Prüfung'],
+  i:'<path d="M8 12h24a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H19l-7 6v-6H8a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/><text x="20" y="27" font-size="12" font-weight="800" fill="#fff" stroke="none" text-anchor="middle" font-family="Arial">FR</text>'},
+ {k:'mathematik',n:'Mathematik',g:'Mathematik & Naturwissenschaften',c:'#AD120D',kl:K5,sp:'Leitidee / Kompetenz',bs:BS_MAT,
+  ber:['Zahl – Variable – Operation','Messen','Raum und Form','Funktionaler Zusammenhang','Daten und Zufall','Problemlösen und Modellieren','Abschlussprüfung'],
+  i:'<path d="M14 10v12M8 16h12M28 16h12M10 32l8 8M18 32l-8 8M34 30v.5M34 41v.5M28 36h12"/>'},
+ {k:'bnt',n:'BNT',g:'Mathematik & Naturwissenschaften',c:'#2E8B4A',kl:['5','6'],sp:'Denk- und Arbeitsweise',bs:BS_MAT,
+  ber:['Denk- und Arbeitsweisen','Materialien trennen – Umwelt schützen','Wasser','Pflanzen und Tiere','Energie effizient nutzen','Sinne und Wahrnehmung','Entwicklung des Menschen','Bauen und Konstruieren'],
+  i:'<path d="M12 38c0-14 8-24 26-26-1 16-10 26-24 26z"/><path d="M12 38c6-8 12-13 20-18"/>'},
+ {k:'biologie',n:'Biologie',g:'Mathematik & Naturwissenschaften',c:'#3F8F3A',kl:K7,sp:'Methoden / Experimente',bs:BS_MAT,
+  ber:['Zelle und Organismus','Stoffwechsel','Ökologie','Sexualerziehung','Genetik','Evolution','Gesundheit','Experimente und Mikroskopie'],
+  i:'<path d="M16 6c0 10 16 14 16 24s-16 10-16 12M32 6c0 10-16 14-16 24s16 10 16 12"/><path d="M18 14h12M18 34h12M16 24h16"/>'},
+ {k:'chemie',n:'Chemie',g:'Mathematik & Naturwissenschaften',c:'#7A5AA6',kl:K7,sp:'Experimente / Sicherheit',bs:BS_MAT,
+  ber:['Stoffe und ihre Eigenschaften','Chemische Reaktionen','Atombau und Periodensystem','Säuren und Basen','Organische Chemie','Experimente und Sicherheit'],
+  i:'<path d="M19 6h10M21 6v12L10 38a3 3 0 0 0 2.6 4.4h22.8A3 3 0 0 0 38 38L27 18V6"/><path d="M14 31h20"/>'},
+ {k:'physik',n:'Physik',g:'Mathematik & Naturwissenschaften',c:'#1E7FA0',kl:K7,sp:'Experimente / Methoden',bs:BS_MAT,
+  ber:['Optik und Akustik','Mechanik','Elektrizitätslehre','Energie','Wärmelehre','Atom- und Kernphysik','Experimente und Messen'],
+  i:'<circle cx="24" cy="24" r="3" fill="#fff"/><ellipse cx="24" cy="24" rx="18" ry="7"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(120 24 24)"/>'},
+ {k:'informatik',n:'Informatik',g:'Mathematik & Naturwissenschaften',c:'#383838',kl:K7,sp:'Werkzeug / Sprache',bs:BS_MAT,
+  ber:['Daten und Codierung','Algorithmen','Programmieren','Rechner und Netze','Informationsgesellschaft und Datensicherheit','Medienbildung'],
+  i:'<rect x="6" y="9" width="36" height="26" rx="3"/><path d="M18 41h12M24 35v6M19 19l-4 3 4 3M29 19l4 3-4 3M26 17l-4 10"/>'},
+ {k:'geographie',n:'Geographie',g:'Gesellschaft',c:'#1E7FA0',kl:K5,sp:'Methoden / Kartenarbeit',bs:BS_MAT,
+  ber:['Orientierung und Karte','Naturräume','Mensch und Raum','Bevölkerung und Verstädterung','Globalisierung','Nachhaltigkeit und Klima','Methoden (WebGIS, Diagramme)'],
+  i:'<circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c5 5 7 11 7 17s-2 12-7 17c-5-5-7-11-7-17s2-12 7-17z"/>'},
+ {k:'geschichte',n:'Geschichte',g:'Gesellschaft',c:'#8A5A2B',kl:K7,sp:'Methoden / Quellenarbeit',bs:BS_MAT,
+  ber:['Antike','Mittelalter','Frühe Neuzeit','Revolutionen und Nationalstaat','Weimarer Republik und NS-Zeit','Nachkriegszeit und deutsche Teilung','Quellen und Darstellungen'],
+  i:'<path d="M14 6h20M14 42h20M16 6c0 10 16 12 16 18s-16 8-16 18M32 6c0 10-16 12-16 18s16 8 16 18"/><path d="M20 38h8" />'},
+ {k:'gk',n:'Gemeinschaftskunde',g:'Gesellschaft',c:'#5A4A8A',kl:K7,sp:'Methoden / Aktualität',bs:BS_MAT,
+  ber:['Zusammenleben in Gruppen','Rechte und Pflichten','Politisches System','Demokratie und Wahlen','Rechtsstaat','Medien und Politik','Europa','Internationale Politik'],
+  i:'<path d="M6 18L24 8l18 10M9 18h30M12 22v14M20 22v14M28 22v14M36 22v14M7 40h34"/>'},
+ {k:'wbs',n:'WBS',g:'Gesellschaft',c:'#B8650F',kl:K7,sp:'Methoden / Berufsorientierung',bs:BS_MAT,
+  ber:['Konsumentinnen und Konsumenten','Erwerbstätige und Berufswahl','Wirtschaftsbürger','Markt und Preis','Betriebserkundung und Praktikum','Bewerbung'],
+  i:'<path d="M8 40V8M8 40h32"/><path d="M13 32l8-8 6 5 11-12"/><path d="M31 17h7v7"/>'},
+ {k:'aes',n:'AES',g:'Wahlpflicht & Profil',c:'#C0392B',kl:K7,sp:'Praxis / Hygiene',bs:BS_MAT,
+  ber:['Ernährung und Gesundheit','Nahrungszubereitung','Konsum und Lebensstil','Haushalt und Familie','Soziales und Pflege','Textilien'],
+  i:'<path d="M8 20h32v12a8 8 0 0 1-8 8H16a8 8 0 0 1-8-8z"/><path d="M4 20h4M40 20h4M18 8c-2 3 2 5 0 8M26 8c-2 3 2 5 0 8"/>'},
+ {k:'technik',n:'Technik',g:'Wahlpflicht & Profil',c:'#4A5A68',kl:K7,sp:'Fertigung / Sicherheit',bs:BS_MAT,
+  ber:['Technisches Zeichnen','Fertigung und Werkstoffe','Elektrotechnik','Bautechnik','Energieversorgung','Informationstechnik','Arbeitssicherheit'],
+  i:'<circle cx="24" cy="24" r="6"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11.3 11.3l4.2 4.2M32.5 32.5l4.2 4.2M11.3 36.7l4.2-4.2M32.5 15.5l4.2-4.2"/>'},
+ {k:'imp',n:'IMP',g:'Wahlpflicht & Profil',c:'#2B4F8A',kl:K8,sp:'Werkzeug / Methode',bs:BS_MAT,
+  ber:['Informatik: Algorithmen und Programmieren','Informatik: Daten und Netze','Mathematik: Modellieren','Mathematik: Daten und Zufall','Physik: Elektronik','Physik: Messen und Steuern','Projekte'],
+  i:'<rect x="13" y="13" width="22" height="22" rx="3"/><path d="M19 6v7M29 6v7M19 35v7M29 35v7M6 19h7M6 29h7M35 19h7M35 29h7M20 20h8v8h-8z"/>'},
+ {k:'nwt',n:'NwT',g:'Wahlpflicht & Profil',c:'#2A7F62',kl:K8,sp:'Projekt / Methode',bs:BS_MAT,
+  ber:['Denk- und Arbeitsweisen','Energie und Mobilität','Bauen und Konstruieren','Messen, Steuern, Regeln','Stoffe und Materialien','Mensch und Umwelt','Projekte'],
+  i:'<path d="M24 6a12 12 0 0 0-7 21.7c1.3 1 2 2.5 2 4.3h10c0-1.8.7-3.3 2-4.3A12 12 0 0 0 24 6z"/><path d="M19 37h10M21 42h6"/>'},
+ {k:'kunst',n:'Bildende Kunst',g:'Musisch & Sport',c:'#D35400',kl:K5,sp:'Technik / Material',bs:BS_MAT,
+  ber:['Fläche (Zeichnen, Malen, Grafik)','Raum (Plastik, Architektur)','Zeit (Film, Aktion, Fotografie)','Kunstgeschichte und Werkbetrachtung','Gestaltung und Design','Profilfach'],
+  i:'<path d="M24 6C13 6 6 14 6 23c0 9 7 15 14 15 3 0 4-2 3-4-1-3 1-5 4-5h5c6 0 10-4 10-9 0-8-8-14-18-14z"/><circle cx="16" cy="20" r="2" fill="#fff"/><circle cx="24" cy="14" r="2" fill="#fff"/><circle cx="32" cy="18" r="2" fill="#fff"/>'},
+ {k:'musik',n:'Musik',g:'Musisch & Sport',c:'#8E44AD',kl:K5,sp:'Praxis / Instrumente',bs:{v:'Instrumente',s:'Instrument',d:'Instrumente und Ausstattung: was es gibt, wo es steht und wer es gerade hat.',a:'Hersteller / Art'},
+  ber:['Musik gestalten und erleben','Musik verstehen','Musik reflektieren','Musikpraxis und Klassenmusizieren','Musiktheorie','Musikgeschichte'],
+  i:'<path d="M18 36V10l20-4v26"/><circle cx="13" cy="36" r="5"/><circle cx="33" cy="32" r="5"/>'},
+ {k:'sport',n:'Sport',g:'Musisch & Sport',c:'#E67E22',kl:K5,sp:'Sportart / Sicherheit',bs:{v:'Sportgeräte',s:'Gerät',d:'Sportgeräte und Material: was es gibt, wo es steht und wer es gerade hat.',a:'Hersteller / Art'},
+  ber:['Spielen (Ballsportarten)','Laufen, Springen, Werfen','Bewegen an Geräten','Bewegen im Wasser','Fitness','Tanzen und Gestalten','Kämpfen','Bundesjugendspiele und Wettkämpfe'],
+  i:'<circle cx="24" cy="27" r="15"/><path d="M20 6h8M24 6v6M24 27l6-6M37 12l3 3"/>'},
+ {k:'kreligion',n:'Kath. Religion',g:'Religion & Ethik',c:'#6D4C41',kl:K5,sp:'Methode / Bibelstelle',bs:BS_MAT,
+  ber:['Mensch','Welt und Verantwortung','Bibel','Gott','Jesus Christus','Kirche','Religionen und Weltanschauungen'],
+  i:'<path d="M24 6v36M14 16h20"/>'},
+ {k:'ereligion',n:'Ev. Religion',g:'Religion & Ethik',c:'#4E6A85',kl:K5,sp:'Methode / Bibelstelle',bs:BS_MAT,
+  ber:['Mensch','Welt und Verantwortung','Bibel','Gott','Jesus Christus','Kirche','Religionen und Weltanschauungen'],
+  i:'<path d="M24 8v32M15 17h18"/><circle cx="24" cy="24" r="17"/>'},
+ {k:'ethik',n:'Ethik',g:'Religion & Ethik',c:'#607D3B',kl:K7,sp:'Methode / Dilemma',bs:BS_MAT,
+  ber:['Mensch sein – Mensch werden','Freiheit und Verantwortung','Zusammenleben','Natur und Technik','Religion und Weltanschauung','Dilemmata und Urteilsbildung'],
+  i:'<path d="M24 8v32M14 40h20M10 14h28"/><path d="M10 14l-5 12h10zM38 14l-5 12h10z"/>'}
+];
+const SUBJ=Object.fromEntries(SUBJECTS.map(s=>[s.k,s]));
+const GROUPS=['Sprachen','Mathematik & Naturwissenschaften','Gesellschaft','Wahlpflicht & Profil','Musisch & Sport','Religion & Ethik'];
+const iconSVG=(s,size)=>'<span class="sicon" style="--c:'+s.c+(size?';--sz:'+size+'px':'')+'"><svg viewBox="0 0 48 48">'+s.i+'</svg></span>';
+
+const FS=SUBJ[QS.get('fach')]?QS.get('fach'):null;
+const SUB=FS?SUBJ[FS]:SUBJECTS[0];
+const FN='Fachschaft '+SUB.n;
+const KEY='pags-fs-'+(FS||'auswahl');
+const LINK=extra=>'?fach='+SUB.k+(extra?'&'+extra:'');
+const LOGIN_DOMAIN='lernplaner.pags-kuelsheim.de'; // gleiche Konten wie der PAGS Lernplaner; es werden keine Mails verschickt
+const CFG=window.LERNPLANER_CONFIG||{};
+const DEMO=!!FS&&QS.has('demo');
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():'x'+Date.now().toString(36)+Math.random().toString(36).slice(2));
+const pad=n=>String(n).padStart(2,'0');
+const dkey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=k=>{const[y,m,d]=String(k).split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(k,n)=>{const d=parse(k);d.setDate(d.getDate()+n);return dkey(d)};
+const today=()=>dkey(new Date());
+const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const MONS=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const fmtD=k=>{if(!k)return '';const d=parse(k);return WD[d.getDay()]+', '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear()};
+const fmtShort=k=>{if(!k)return '';const d=parse(k);return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'};
+const fmtTS=t=>{if(!t)return '';const d=new Date(t);return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear()};
+const daysUntil=k=>Math.round((parse(k)-parse(today()))/864e5);
+const rel=k=>{const n=daysUntil(k);return n===0?'heute':n===1?'morgen':n===-1?'gestern':n>0?'in '+n+' Tagen':'vor '+(-n)+' Tagen'};
+const initials=n=>String(n||'?').split(/\s+/).filter(w=>w&&!/^(von|van|de|der)$/i.test(w)).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const ICON={
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+  print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a1 1 0 0 1-1 1h-2"/><rect x="7" y="14" width="10" height="6"/></svg>',
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z"/></svg>'
+};
+
+/* ---------- Fachliche Listen ---------- */
+const KL=SUB.kl;
+const NIV=['G','M','E'];
+const BEREICHE=SUB.ber;
+const BS=SUB.bs;
+const MATART=['Arbeitsblatt','Unterrichtseinheit','Klassenarbeit','Bewertungsraster',(BS===BS_LIT?'Lektürematerial':'Begleitmaterial'),'Diagnose / Lernstand','Digitales / Link'];
+const TERMART={sitzung:{l:'Fachschaftssitzung',c:'var(--s1)'},pruefung:{l:'Prüfung',c:'var(--s4)'},frist:{l:'Frist',c:'var(--s2)'},veranstaltung:{l:'Veranstaltung',c:'var(--s3)'},sonst:{l:'Sonstiges',c:'var(--s5)'}};
+const VKAT=['Leistungsbewertung','Klassenarbeiten','Korrektur','Unterricht und Methoden',BS.v,'Organisation'];
+const DEFKEY={name:'Standard der Fachschaft',grenzen:[87,73,59,45,18]};
+
+/* Formulare: ein Feld-Schema pro Eintragsart */
+const FORMS={
+  termin:{t:'Termin',f:[
+    {k:'titel',l:'Titel',t:'text',req:1,ph:'z. B. '+FN.replace('Fachschaft','Fachschaftssitzung')},
+    {k:'art',l:'Art',t:'seg',opts:Object.keys(TERMART).map(k=>[k,TERMART[k].l]),def:'sitzung'},
+    {g:[{k:'datum',l:'Datum',t:'date',req:1},{k:'zeit',l:'Uhrzeit',t:'time'}]},
+    {k:'ort',l:'Ort / Raum',t:'text',ph:'z. B. Lehrerzimmer'},
+    {k:'klassen',l:'Klassenstufen',t:'multi',opts:KL},
+    {k:'notiz',l:'Notiz',t:'area',ph:'Tagesordnung, Hinweise …'}]},
+  aufgabe:{t:'Aufgabe',f:[
+    {k:'titel',l:'Was ist zu tun?',t:'text',req:1,ph:'z. B. Bewertungsraster Erörterung überarbeiten'},
+    {g:[{k:'zustaendig',l:'Zuständig',t:'member'},{k:'faellig',l:'Fällig am',t:'date'}]},
+    {k:'notiz',l:'Notiz',t:'area'},
+    {k:'erledigt',l:'Erledigt',t:'check'}]},
+  material:{t:'Material',f:[
+    {k:'titel',l:'Titel',t:'text',req:1,ph:SUB.k==='deutsch'?'z. B. Kurzgeschichte „Das Brot“ – Analyse':'z. B. Klassenarbeit Kl. '+KL[0]+' – '+BEREICHE[0]},
+    {k:'url',l:'Link',t:'url',ph:'https://… (Moodle, Drive, Schulcloud)',hint:'Dateien selbst bleiben in eurem Speicher, hier steht nur der Link.'},
+    {g:[{k:'art',l:'Art',t:'select',opts:MATART},{k:'bereich',l:'Bereich',t:'select',opts:BEREICHE}]},
+    {k:'klassen',l:'Klassenstufen',t:'multi',opts:KL},
+    {k:'niveau',l:'Niveau',t:'multi',opts:NIV},
+    {k:'beschreibung',l:'Beschreibung',t:'area',ph:'Inhalt, Umfang, Erfahrungen im Unterricht …'}]},
+  lektuere:{t:BS.s,f:[
+    {k:'titel',l:'Titel / Bezeichnung',t:'text',req:1},
+    {k:'autor',l:BS.a,t:'text'},
+    {k:'klassen',l:'Geeignet für Klasse',t:'multi',opts:KL},
+    {k:'niveau',l:'Niveau',t:'multi',opts:NIV},
+    {g:[{k:'bestand',l:'Bestand (Stück)',t:'number'},{k:'standort',l:'Standort',t:'text',ph:'z. B. Fachraum D, Regal 2'}]},
+    {k:'notiz',l:'Notiz',t:'area',ph:'Material dazu, Erfahrungen …'}]},
+  plan:{t:'Einheit',f:[
+    {k:'klasse',l:'Klassenstufe',t:'seg',opts:KL.map(k=>[k,k]),req:1},
+    {g:[{k:'nr',l:'Reihenfolge',t:'number',ph:'1'},{k:'zeitraum',l:'Zeitraum',t:'text',ph:'z. B. Sept.–Okt.'}]},
+    {k:'titel',l:'Einheit',t:'text',req:1,ph:'z. B. '+BEREICHE[0]},
+    {k:'inhalte',l:'Inhalte und Kompetenzen',t:'area'},
+    {k:'grammatik',l:SUB.sp,t:'text',ph:SUB.k==='deutsch'?'z. B. Satzglieder, Kommasetzung':''},
+    {k:'klassenarbeit',l:'mit Klassenarbeit',t:'check'},
+    {k:'url',l:'Link zum Material',t:'url'}]},
+  protokoll:{t:'Protokoll',f:[
+    {g:[{k:'datum',l:'Datum',t:'date',req:1},{k:'protokollant',l:'Protokoll',t:'member'}]},
+    {k:'titel',l:'Titel',t:'text',def:FN.replace('Fachschaft','Fachschaftssitzung')},
+    {k:'anwesend',l:'Anwesend',t:'text',ph:'Namen, durch Komma getrennt'},
+    {k:'tops',l:'Tagesordnung und Verlauf',t:'area',ph:'TOP 1: …\nTOP 2: …',rows:8},
+    {k:'beschluesse',l:'Beschlüsse',t:'lines',ph:'Ein Beschluss pro Zeile',hint:'Jede Zeile wird ein eigener Beschluss. Du kannst ihn später in die Vereinbarungen übernehmen.'}]},
+  vereinbarung:{t:'Vereinbarung',f:[
+    {k:'titel',l:'Titel',t:'text',req:1,ph:'z. B. Gewichtung schriftlich : mündlich'},
+    {k:'kategorie',l:'Bereich',t:'select',opts:VKAT},
+    {k:'text',l:'Was gilt?',t:'area',req:1},
+    {g:[{k:'seit',l:'Gilt seit',t:'date'},{k:'quelle',l:'Quelle',t:'text',ph:'z. B. Sitzung vom …'}]}]},
+  pinnwand:{t:'Notiz für die Pinnwand',f:[
+    {k:'text',l:'Nachricht',t:'area',req:1,ph:'z. B. Neue Klassensätze sind im Fachraum angekommen.'},
+    {k:'wichtig',l:'Oben anheften',t:'check'}]},
+  einstellung:{t:'Notenschlüssel',f:[
+    {k:'name',l:'Name',t:'text',req:1,ph:'z. B. Klassenarbeiten 5–8'},
+    {k:'g1',l:'Note 1 ab … %',t:'number',req:1},{k:'g2',l:'Note 2 ab … %',t:'number',req:1},
+    {k:'g3',l:'Note 3 ab … %',t:'number',req:1},{k:'g4',l:'Note 4 ab … %',t:'number',req:1},
+    {k:'g5',l:'Note 5 ab … %',t:'number',req:1,hint:'Darunter: Note 6.'}]}
+};
+
+const VIEWS=[
+  {k:'uebersicht',l:'Übersicht'},{k:'termine',l:'Termine',typ:'termin'},{k:'aufgaben',l:'Aufgaben',typ:'aufgabe'},
+  {k:'material',l:'Material',typ:'material'},{k:'lektueren',l:BS.v,typ:'lektuere'},{k:'planung',l:'Jahresplanung',typ:'plan'},
+  {k:'protokolle',l:'Protokolle',typ:'protokoll'},{k:'vereinbarungen',l:'Vereinbarungen',typ:'vereinbarung'},
+  {k:'noten',l:'Notenrechner',typ:'einstellung'},{k:'fachschaft',l:'Fachschaft'}
+];
+const FAB={termin:'Termin',aufgabe:'Aufgabe',material:'Material',lektuere:BS.s,plan:'Einheit',protokoll:'Protokoll',vereinbarung:'Vereinbarung',einstellung:'Schlüssel',pinnwand:'Notiz'};
+
+/* ---------- Zustand ---------- */
+let CLOUD=null, USER=null, ME=null, ITEMS=[], MEMBERS=[], VIEW='uebersicht', SYNC='';
+const UI=JSON.parse(lsGet(KEY+':ui')||'{}');
+const saveUI=()=>lsSet(KEY+':ui',JSON.stringify(UI));
+const of=typ=>ITEMS.filter(i=>i.typ===typ);
+const byId=id=>ITEMS.find(i=>i.id===id);
+const isLeitung=()=>ME&&ME.rolle==='leitung';
+
+function setSync(s){SYNC=s;const el=$('#sync');if(!el)return;
+  el.textContent={ok:'✓ aktuell',saving:'speichert …',offline:'offline',demo:'Demo',auth:'neu anmelden'}[s]||'';
+  el.classList.toggle('warn',s==='offline'||s==='auth')}
+function cacheKey(){return KEY+':cache:'+(USER?USER.id:'')}
+function writeCache(){if(!DEMO&&USER)lsSet(cacheKey(),JSON.stringify({items:ITEMS,members:MEMBERS,me:ME,at:Date.now()}))}
+
+/* ---------- Datenzugriff ---------- */
+async function loadAll(silent){
+  if(DEMO){return true}
+  try{
+    const [a,b]=await Promise.all([
+      CLOUD.from('fs_eintraege').select('id,typ,data,created_name,updated_name,created_at,updated_at').eq('fachschaft',FS).order('updated_at',{ascending:false}),
+      CLOUD.from('fs_mitglieder').select('user_id,name,rolle,joined_at').eq('fachschaft',FS).order('name')
+    ]);
+    if(a.error||b.error)throw (a.error||b.error);
+    const sig=x=>x.length+'|'+(x[0]?x[0].updated_at:'')+'|'+x.map(i=>i.id).join('').length;
+    const changed=sig(a.data)!==sig(ITEMS)||b.data.length!==MEMBERS.length;
+    ITEMS=a.data;MEMBERS=b.data;ME=MEMBERS.find(m=>m.user_id===USER.id)||null;
+    writeCache();setSync('ok');
+    if(silent&&changed&&!sheetOpen())render();
+    return true;
+  }catch(e){setSync(/JWT|401/.test((e&&e.message)||'')?'auth':'offline');return false}
+}
+function fail(e){const m=(e&&e.message)||'';toast(/fetch|network|Failed/i.test(m)||navigator.onLine===false?'Offline – nicht gespeichert. Bitte später noch einmal.':'Fehler: '+m);setSync(navigator.onLine===false?'offline':SYNC)}
+async function createItem(typ,data){
+  if(DEMO){const now=new Date().toISOString();const it={id:uid(),typ,data,created_name:ME.name,updated_name:ME.name,created_at:now,updated_at:now};ITEMS.unshift(it);return it}
+  setSync('saving');
+  const {data:row,error}=await CLOUD.from('fs_eintraege').insert({fachschaft:FS,typ,data,created_by:USER.id}).select().single();
+  if(error){fail(error);return null}
+  ITEMS.unshift(row);writeCache();setSync('ok');return row;
+}
+async function updateItem(id,data){
+  const it=byId(id);if(!it)return null;
+  if(DEMO){it.data=data;it.updated_name=ME.name;it.updated_at=new Date().toISOString();return it}
+  setSync('saving');
+  const {data:row,error}=await CLOUD.from('fs_eintraege').update({data}).eq('id',id).select().single();
+  if(error){fail(error);return null}
+  Object.assign(it,row);writeCache();setSync('ok');return it;
+}
+async function deleteItem(id){
+  if(DEMO){ITEMS=ITEMS.filter(i=>i.id!==id);return true}
+  setSync('saving');
+  const {error}=await CLOUD.from('fs_eintraege').delete().eq('id',id);
+  if(error){fail(error);return false}
+  ITEMS=ITEMS.filter(i=>i.id!==id);writeCache();setSync('ok');return true;
+}
+
+/* ---------- Sheet, Toast ---------- */
+const sheet=$('#sheet'),scrim=$('#scrim');let sheetClose=null,sheetLocked=false;
+const sheetOpen=()=>sheet.classList.contains('on');
+function openSheet(html,onClose,locked){sheet.innerHTML='<div class="grab"></div>'+html;sheetClose=onClose||null;sheetLocked=!!locked;scrim.classList.add('on');sheet.classList.add('on');sheet.scrollTop=0}
+function closeSheet(force){if(sheetLocked&&!force)return;sheet.classList.remove('on');scrim.classList.remove('on');document.body.classList.remove('printsheet');const f=sheetClose;sheetClose=null;sheetLocked=false;if(f)f()}
+scrim.onclick=()=>closeSheet();
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheetOpen())closeSheet()});
+let tt=0;
+function toast(msg,action,fn){const el=$('#toast');clearTimeout(tt);
+  el.innerHTML=esc(msg)+(action?'<button>'+esc(action)+'</button>':'');
+  if(action)el.querySelector('button').onclick=()=>{el.classList.remove('on');fn()};
+  el.classList.add('on');tt=setTimeout(()=>el.classList.remove('on'),action?5000:2800)}
+
+/* ---------- Formulare ---------- */
+function fieldHTML(f,v){
+  const id='f-'+f.k, val=v==null?(f.def!=null?f.def:''):v;
+  const lab='<label for="'+id+'">'+esc(f.l)+(f.req?' *':'')+'</label>';
+  const hint=f.hint?'<small>'+esc(f.hint)+'</small>':'';
+  switch(f.t){
+    case 'area':return '<div class="field">'+lab+'<textarea id="'+id+'" rows="'+(f.rows||4)+'" placeholder="'+esc(f.ph||'')+'">'+esc(val)+'</textarea>'+hint+'</div>';
+    case 'lines':return '<div class="field">'+lab+'<textarea id="'+id+'" rows="5" placeholder="'+esc(f.ph||'')+'">'+esc(Array.isArray(val)?val.join('\n'):val)+'</textarea>'+hint+'</div>';
+    case 'select':return '<div class="field">'+lab+'<select id="'+id+'"><option value="">– bitte wählen –</option>'+f.opts.map(o=>'<option'+(o===val?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>'+hint+'</div>';
+    case 'seg':return '<div class="field"><span class="lab">'+esc(f.l)+(f.req?' *':'')+'</span><div class="seg" data-seg="'+f.k+'">'+f.opts.map(([k,l])=>'<button type="button" data-v="'+esc(k)+'" aria-pressed="'+(String(val)===k)+'">'+esc(l)+'</button>').join('')+'</div>'+hint+'</div>';
+    case 'multi':{const a=Array.isArray(val)?val:[];return '<div class="field"><span class="lab">'+esc(f.l)+'</span><div class="chips" data-multi="'+f.k+'">'+f.opts.map(o=>'<button type="button" class="chip" data-v="'+esc(o)+'" aria-pressed="'+a.includes(o)+'">'+esc(o)+'</button>').join('')+'</div>'+hint+'</div>'}
+    case 'check':return '<label class="cbx"><input type="checkbox" id="'+id+'"'+(val?' checked':'')+'>'+esc(f.l)+'</label>';
+    case 'member':return '<div class="field">'+lab+'<input id="'+id+'" list="dl-members" value="'+esc(val)+'" autocomplete="off" placeholder="Name">'+hint+'</div>';
+    default:{const type={date:'date',time:'time',number:'number',url:'url'}[f.t]||'text';
+      return '<div class="field">'+lab+'<input id="'+id+'" type="'+type+'"'+(type==='number'?' inputmode="decimal" step="any"':'')+' value="'+esc(val)+'" placeholder="'+esc(f.ph||'')+'">'+hint+'</div>'}
+  }
+}
+const flat=fs=>fs.flatMap(f=>f.g||[f]);
+function formHTML(typ,data){
+  const F=FORMS[typ];
+  return F.f.map(f=>f.g?'<div class="two">'+f.g.map(x=>fieldHTML(x,data[x.k])).join('')+'</div>':fieldHTML(f,data[f.k])).join('')
+   +'<datalist id="dl-members">'+MEMBERS.map(m=>'<option value="'+esc(m.name)+'">').join('')+'</datalist>';
+}
+function wireForm(){
+  $$('#sheet [data-seg] button').forEach(b=>b.onclick=()=>{b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+  $$('#sheet [data-multi] button').forEach(b=>b.onclick=()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true'));
+}
+function readForm(typ,old){
+  const d=Object.assign({},old||{});let miss=null;
+  for(const f of flat(FORMS[typ].f)){
+    let v;
+    if(f.t==='seg'){const b=sheet.querySelector('[data-seg="'+f.k+'"] [aria-pressed="true"]');v=b?b.dataset.v:''}
+    else if(f.t==='multi'){v=[...sheet.querySelectorAll('[data-multi="'+f.k+'"] [aria-pressed="true"]')].map(b=>b.dataset.v)}
+    else if(f.t==='check'){v=$('#f-'+f.k).checked}
+    else if(f.t==='lines'){v=$('#f-'+f.k).value.split('\n').map(s=>s.trim()).filter(Boolean)}
+    else{v=$('#f-'+f.k).value.trim();
+      if(f.t==='number'&&v!=='')v=Number(String(v).replace(',','.'));
+      if(f.t==='url'&&v&&!/^[a-z]+:\/\//i.test(v))v='https://'+v}
+    if(f.req&&(v===''||v==null||(Array.isArray(v)&&!v.length))&&!miss)miss=f.l;
+    d[f.k]=v;
+  }
+  return {d,miss};
+}
+function byline(it){
+  if(!it||!it.created_at)return '';
+  let s='Angelegt von '+(it.created_name||'unbekannt')+' am '+fmtTS(it.created_at);
+  if(it.updated_at&&it.updated_at!==it.created_at&&Math.abs(new Date(it.updated_at)-new Date(it.created_at))>60000)s+=' · zuletzt geändert von '+(it.updated_name||'unbekannt')+' am '+fmtTS(it.updated_at);
+  return s;
+}
+function openForm(typ,id,preset){
+  const it=id?byId(id):null,F=FORMS[typ];
+  const data=Object.assign({},it?it.data:{},preset||{});
+  openSheet('<h2 class="shtitle">'+esc(F.t)+(it?' bearbeiten':' anlegen')+'</h2>'
+   +(typ==='protokoll'||typ==='material'||typ==='lektuere'?'<p class="note-s" style="margin-bottom:12px">Bitte keine Daten von Schülerinnen und Schülern eintragen.</p>':'')
+   +'<form class="form" id="frm" novalidate>'+formHTML(typ,data)
+   +'<p class="lmsg" id="fmsg" role="alert"></p>'
+   +'<div class="row"><button type="button" class="btn" id="fx">Abbrechen</button><button class="btn primary" id="fok">Speichern</button></div>'
+   +(it?'<div class="row"><button type="button" class="btn danger" id="fdel">Löschen</button></div><p class="meta">'+esc(byline(it))+'</p>':'')
+   +'</form>');
+  wireForm();
+  const first=sheet.querySelector('input:not([type=checkbox]),textarea');if(first&&!it&&matchMedia('(pointer:fine)').matches)first.focus();
+  $('#fx').onclick=()=>closeSheet();
+  $('#frm').onsubmit=async e=>{e.preventDefault();
+    const {d,miss}=readForm(typ,it?it.data:null);
+    if(miss){$('#fmsg').textContent='Bitte „'+miss+'“ ausfüllen.';return}
+    if(typ==='einstellung'){d.art='notenschluessel';const g=[d.g1,d.g2,d.g3,d.g4,d.g5];
+      if(g.some(x=>!(x>=0&&x<=100))||g.some((x,i)=>i&&x>=g[i-1])){$('#fmsg').textContent='Die Grenzen müssen von Note 1 bis Note 5 kleiner werden (0–100 %).';return}}
+    if(typ==='aufgabe'){if(d.erledigt&&!(it&&it.data.erledigt))d.erledigt_am=today();if(!d.erledigt)delete d.erledigt_am}
+    $('#fok').disabled=true;
+    const r=it?await updateItem(it.id,d):await createItem(typ,d);
+    if(!r){$('#fok').disabled=false;return}
+    closeSheet(true);render();toast(it?'Gespeichert':F.t+' angelegt');
+  };
+  if(it)$('#fdel').onclick=function(){
+    if(this.dataset.sure){deleteItem(it.id).then(ok=>{if(ok){closeSheet(true);render();toast('Gelöscht')}});return}
+    this.dataset.sure='1';this.textContent='Wirklich löschen? Nochmal tippen';
+  };
+}
+
+/* ---------- Bausteine ---------- */
+const tags=(arr,cls)=>(arr||[]).map(x=>'<span class="tag'+(cls?' '+cls:'')+'">'+esc(x)+'</span>').join('');
+const klTags=a=>a&&a.length?'<span class="tag">Kl. '+esc(a.join(', '))+'</span>':'';
+const nivTags=a=>a&&a.length?'<span class="tag">'+esc(a.join('/'))+'</span>':'';
+const empty=(txt)=>'<div class="empty">'+txt+'</div>';
+function head(title,lead,eyebrow){
+  return '<div class="intro"><div class="eyerow"><div class="eyebrow">'+esc(eyebrow||FN)+'</div><span class="status" id="sync"></span></div>'
+   +'<h1>'+esc(title)+'</h1>'+(lead?'<p class="lead">'+lead+'</p>':'')+'</div>';
+}
+function searchBox(id,ph,val){return '<label class="search">'+ICON.search+'<input id="'+id+'" type="search" placeholder="'+esc(ph)+'" value="'+esc(val||'')+'" aria-label="'+esc(ph)+'"></label>'}
+const match=(it,q)=>!q||JSON.stringify(it.data).toLowerCase().includes(q.toLowerCase());
+
+function terminCard(it){
+  const d=it.data,a=TERMART[d.art]||TERMART.sonst,dt=parse(d.datum),past=d.datum<today();
+  return '<div class="card" data-open="'+it.id+'"'+(past?' style="opacity:.6"':'')+'><div class="datebox" style="--tc:'+a.c+'"><b>'+dt.getDate()+'</b><span>'+MONS[dt.getMonth()]+'</span></div>'
+   +'<div class="body"><div class="t">'+esc(d.titel)+'</div><div class="d">'+esc(WD[dt.getDay()]+(d.zeit?', '+d.zeit+' Uhr':'')+(d.ort?' · '+d.ort:''))+'</div>'
+   +'<div class="tags"><span class="tag c" style="--tc:'+a.c+'">'+esc(a.l)+'</span>'+klTags(d.klassen)+(past?'':'<span class="tag">'+rel(d.datum)+'</span>')+'</div>'
+   +(d.notiz?'<div class="d">'+esc(d.notiz)+'</div>':'')+'</div></div>';
+}
+function aufgabeCard(it){
+  const d=it.data,late=!d.erledigt&&d.faellig&&d.faellig<today();
+  return '<div class="card'+(d.erledigt?' done':'')+'" data-open="'+it.id+'"><button class="check" data-toggle="'+it.id+'" aria-label="'+(d.erledigt?'Als offen markieren':'Als erledigt markieren')+'">'+ICON.check+'</button>'
+   +'<div class="body"><div class="t">'+esc(d.titel)+'</div><div class="tags">'+(d.zustaendig?'<span class="tag">'+esc(d.zustaendig)+'</span>':'<span class="tag">noch offen, wer</span>')
+   +(d.faellig?'<span class="tag'+(late?' warn':'')+'">bis '+fmtShort(d.faellig)+(late?' · überfällig':'')+'</span>':'')
+   +(d.erledigt&&d.erledigt_am?'<span class="tag ok">erledigt '+fmtShort(d.erledigt_am)+'</span>':'')+'</div>'
+   +(d.notiz?'<div class="d">'+esc(d.notiz)+'</div>':'')+'</div></div>';
+}
+function materialCard(it){
+  const d=it.data;
+  return '<div class="card" data-open="'+it.id+'"><div class="body"><div class="t">'+esc(d.titel)+'</div>'
+   +'<div class="tags">'+(d.art?'<span class="tag c" style="--tc:var(--s1)">'+esc(d.art)+'</span>':'')+klTags(d.klassen)+nivTags(d.niveau)+(d.bereich?'<span class="tag">'+esc(d.bereich)+'</span>':'')+'</div>'
+   +(d.beschreibung?'<div class="d">'+esc(d.beschreibung)+'</div>':'')+'<div class="by">'+esc(it.created_name||'')+' · '+fmtTS(it.created_at)+'</div></div>'
+   +(d.url?'<div class="side"><a class="btnsm ink" href="'+esc(d.url)+'" target="_blank" rel="noopener" data-stop>'+ICON.ext+'Öffnen</a></div>':'')+'</div>';
+}
+function lektuereCard(it){
+  const d=it.data,a=d.ausleihe;
+  return '<div class="card" data-open="'+it.id+'"><div class="body"><div class="t">'+esc(d.titel)+'</div>'+(d.autor?'<div class="d">'+esc(d.autor)+'</div>':'')
+   +'<div class="tags">'+klTags(d.klassen)+nivTags(d.niveau)+(d.bestand?'<span class="tag">'+esc(d.bestand)+' Stück</span>':'')+(d.standort?'<span class="tag">'+esc(d.standort)+'</span>':'')
+   +(a?'<span class="tag warn">ausgeliehen: '+esc(a.name)+(a.klasse?' ('+esc(a.klasse)+')':'')+(a.bis?' bis '+fmtShort(a.bis):'')+'</span>':'<span class="tag ok">verfügbar</span>')+'</div>'
+   +(d.notiz?'<div class="d">'+esc(d.notiz)+'</div>':'')+'</div>'
+   +'<div class="side"><button class="btnsm'+(a?'':' ink')+'" data-lend="'+it.id+'">'+(a?'Zurückgeben':'Ausleihen')+'</button></div></div>';
+}
+function vereinbarungCard(it){
+  const d=it.data;
+  return '<div class="card" data-open="'+it.id+'"><div class="body"><div class="t">'+esc(d.titel)+'</div><div class="d">'+esc(d.text)+'</div>'
+   +'<div class="tags">'+(d.seit?'<span class="tag">gilt seit '+fmtShort(d.seit)+parse(d.seit).getFullYear()+'</span>':'')+(d.quelle?'<span class="tag">'+esc(d.quelle)+'</span>':'')+'</div></div></div>';
+}
+function protokollCard(it){
+  const d=it.data,n=(d.beschluesse||[]).length;
+  return '<div class="card" data-proto="'+it.id+'"><div class="datebox" style="--tc:var(--s1)"><b>'+parse(d.datum).getDate()+'</b><span>'+MONS[parse(d.datum).getMonth()]+'</span></div><div class="body"><div class="t">'+esc(d.titel||'Fachschaftssitzung')+'</div>'
+   +'<div class="d">'+esc(fmtD(d.datum))+(d.protokollant?' · Protokoll: '+esc(d.protokollant):'')+'</div>'
+   +'<div class="tags"><span class="tag">'+n+' '+(n===1?'Beschluss':'Beschlüsse')+'</span></div></div></div>';
+}
+function pinCard(it){
+  const d=it.data;
+  return '<div class="card'+(d.wichtig?' pin':'')+'" data-open="'+it.id+'"><div class="body"><div class="t" style="font-weight:600">'+esc(d.text)+'</div><div class="by">'+(d.wichtig?'Angeheftet · ':'')+esc(it.created_name||'')+' · '+fmtTS(it.created_at)+'</div></div></div>';
+}
+const upcoming=()=>of('termin').filter(i=>i.data.datum>=today()).sort((a,b)=>(a.data.datum+(a.data.zeit||'')).localeCompare(b.data.datum+(b.data.zeit||'')));
+const openTasks=()=>of('aufgabe').filter(i=>!i.data.erledigt).sort((a,b)=>(a.data.faellig||'9999').localeCompare(b.data.faellig||'9999'));
+const mine=it=>ME&&it.data.zustaendig&&it.data.zustaendig.toLowerCase().includes(ME.name.toLowerCase().split(' ')[0]);
+
+/* ---------- Ansichten ---------- */
+const R={};
+R.uebersicht=()=>{
+  const up=upcoming(),ot=openTasks(),my=ot.filter(mine);
+  const pins=of('pinnwand').sort((a,b)=>(b.data.wichtig?1:0)-(a.data.wichtig?1:0)||b.created_at.localeCompare(a.created_at)).slice(0,5);
+  const mats=of('material').sort((a,b)=>b.created_at.localeCompare(a.created_at)).slice(0,4);
+  const vs=of('vereinbarung').sort((a,b)=>(b.data.seit||'').localeCompare(a.data.seit||'')).slice(0,3);
+  const h=new Date().getHours(),gr=h<11?'Guten Morgen':h<18?'Hallo':'Guten Abend';
+  const fn=ME?ME.name.split(' ')[0]:'';
+  return head(gr+(fn?', '+fn:''),'Was in der Fachschaft gerade ansteht.',fmtD(today()))
+   +'<div class="stats"><a class="stat" href="#termine"><b>'+up.length+'</b><span>Termine</span></a><a class="stat" href="#aufgaben"><b>'+ot.length+'</b><span>offene Aufgaben</span></a>'
+   +'<a class="stat" href="#material"><b>'+of('material').length+'</b><span>Materialien</span></a><a class="stat" href="#lektueren"><b>'+of('lektuere').length+'</b><span>'+esc(BS.v)+'</span></a></div>'
+   +'<div class="grid"><section class="sec"><div class="sechead"><h2>Nächste Termine</h2><a class="more" href="#termine">alle</a></div><div class="list">'+(up.slice(0,4).map(terminCard).join('')||empty('Keine Termine geplant.'))+'</div></section>'
+   +'<section class="sec"><div class="sechead"><h2>Aufgaben</h2><span class="count">'+(my.length?my.length+' für dich':'')+'</span><a class="more" href="#aufgaben">alle</a></div><div class="list">'+((my.length?my:ot).slice(0,4).map(aufgabeCard).join('')||empty('Alles erledigt.'))+'</div></section>'
+   +'<section class="sec"><div class="sechead"><h2>Pinnwand</h2><button class="more" data-new="pinnwand">+ Notiz</button></div><div class="list">'+(pins.map(pinCard).join('')||empty('Noch leer. Hier passen kurze Infos für alle hin.'))+'</div></section>'
+   +'<section class="sec"><div class="sechead"><h2>Neu im Materialpool</h2><a class="more" href="#material">alle</a></div><div class="list">'+(mats.map(materialCard).join('')||empty('Noch kein Material geteilt.'))+'</div></section>'
+   +'</div><section class="sec"><div class="sechead"><h2>Zuletzt vereinbart</h2><a class="more" href="#vereinbarungen">alle</a></div><div class="list">'+(vs.map(vereinbarungCard).join('')||empty('Noch keine Vereinbarungen.'))+'</div></section>';
+};
+R.termine=()=>{
+  UI.tArt=UI.tArt||'';const past=!!UI.tPast;
+  let l=of('termin').filter(i=>!UI.tArt||i.data.art===UI.tArt);
+  l=past?l.filter(i=>i.data.datum<today()).sort((a,b)=>b.data.datum.localeCompare(a.data.datum)):l.filter(i=>i.data.datum>=today()).sort((a,b)=>(a.data.datum+(a.data.zeit||'')).localeCompare(b.data.datum+(b.data.zeit||'')));
+  let html='',m='';
+  l.forEach(it=>{const d=parse(it.data.datum),mm=MON[d.getMonth()]+' '+d.getFullYear();if(mm!==m){m=mm;html+='<div class="month">'+mm+'</div>'}html+=terminCard(it)});
+  return head('Termine & Fristen','Sitzungen, Prüfungen, Abgaben – für alle sichtbar. Mit „Kalender“ holst du alle kommenden Termine in deinen eigenen Kalender.')
+   +'<div class="tools"><div class="seg" style="flex:0 0 auto"><button data-tpast="0" aria-pressed="'+!past+'">Kommende</button><button data-tpast="1" aria-pressed="'+past+'">Vergangene</button></div>'
+   +'<button class="btnsm" data-ics="all">'+ICON.cal+'Kalender (.ics)</button></div>'
+   +'<div class="fchips"><button class="fchip" data-tart="" aria-pressed="'+!UI.tArt+'">Alle</button>'+Object.keys(TERMART).map(k=>'<button class="fchip" data-tart="'+k+'" aria-pressed="'+(UI.tArt===k)+'">'+TERMART[k].l+'</button>').join('')+'</div>'
+   +'<div class="list" style="margin-top:12px">'+(html||empty(past?'Keine vergangenen Termine.':'Keine kommenden Termine. Tippe auf <b>+ Termin</b>.'))+'</div>';
+};
+R.aufgaben=()=>{
+  const only=!!UI.aMine,q=UI.aQ||'';
+  let o=openTasks(),d=of('aufgabe').filter(i=>i.data.erledigt).sort((a,b)=>(b.data.erledigt_am||'').localeCompare(a.data.erledigt_am||''));
+  if(only){o=o.filter(mine);d=d.filter(mine)}
+  return head('Aufgaben','Wer kümmert sich um was bis wann. Haken setzen, wenn es erledigt ist.')
+   +'<div class="fchips"><button class="fchip" data-amine="0" aria-pressed="'+!only+'">Alle</button><button class="fchip" data-amine="1" aria-pressed="'+only+'">Nur meine</button></div>'
+   +'<section class="sec" style="padding-top:14px"><div class="sechead"><h2>Offen</h2><span class="count">'+o.length+'</span></div><div class="list">'+(o.map(aufgabeCard).join('')||empty('Nichts offen.'))+'</div></section>'
+   +'<section class="sec"><div class="sechead"><h2>Erledigt</h2><span class="count">'+d.length+'</span></div><div class="list">'+(d.slice(0,UI.aAll?999:6).map(aufgabeCard).join('')||empty('Noch nichts erledigt.'))+'</div>'
+   +(d.length>6&&!UI.aAll?'<button class="btnsm" style="margin-top:8px" data-aall>Alle '+d.length+' anzeigen</button>':'')+'</section>';
+};
+R.material=()=>{
+  const f=UI.mf=UI.mf||{q:'',kl:'',niv:'',art:'',ber:''};
+  const l=of('material').filter(i=>{const d=i.data;return match(i,f.q)&&(!f.kl||(d.klassen||[]).includes(f.kl))&&(!f.niv||(d.niveau||[]).includes(f.niv))&&(!f.art||d.art===f.art)&&(!f.ber||d.bereich===f.ber)})
+    .sort((a,b)=>b.created_at.localeCompare(a.created_at));
+  const sel=(k,opts,ph)=>'<select class="fsel" data-mf="'+k+'"><option value="">'+ph+'</option>'+opts.map(o=>'<option'+(f[k]===o?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
+  return head('Materialpool','Gute Materialien teilen statt doppelt erstellen. Hier stehen Links zu euren Dateien, sortiert nach Klasse, Niveau und Bereich.')
+   +'<div class="tools">'+searchBox('mq','Material suchen …',f.q)+'</div>'
+   +'<div class="fchips"><span class="fchip" style="background:none;padding-left:0">Klasse</span><button class="fchip" data-mkl="" aria-pressed="'+!f.kl+'">alle</button>'+KL.map(k=>'<button class="fchip" data-mkl="'+k+'" aria-pressed="'+(f.kl===k)+'">'+k+'</button>').join('')+'</div>'
+   +'<div class="fchips"><span class="fchip" style="background:none;padding-left:0">Niveau</span><button class="fchip" data-mniv="" aria-pressed="'+!f.niv+'">alle</button>'+NIV.map(k=>'<button class="fchip" data-mniv="'+k+'" aria-pressed="'+(f.niv===k)+'">'+k+'</button>').join('')+'</div>'
+   +'<div class="tools" style="margin-top:8px">'+sel('art',MATART,'Alle Arten')+sel('ber',BEREICHE,'Alle Bereiche')+'</div>'
+   +'<div class="sechead" style="margin-top:16px"><span class="count">'+l.length+' von '+of('material').length+'</span></div>'
+   +'<div class="list" id="mlist">'+(l.map(materialCard).join('')||empty(of('material').length?'Nichts gefunden. Filter lockern?':'Noch kein Material. Tippe auf <b>+ Material</b> und füge den ersten Link ein.'))+'</div>';
+};
+R.lektueren=()=>{
+  const q=UI.lq||'',kl=UI.lkl||'';
+  const l=of('lektuere').filter(i=>match(i,q)&&(!kl||(i.data.klassen||[]).includes(kl))).sort((a,b)=>a.data.titel.localeCompare(b.data.titel,'de'));
+  const out=l.filter(i=>i.data.ausleihe).length;
+  return head(BS.v,BS.d)
+   +'<div class="tools">'+searchBox('lq','Suchen …',q)+'</div>'
+   +'<div class="fchips"><span class="fchip" style="background:none;padding-left:0">Klasse</span><button class="fchip" data-lkl="" aria-pressed="'+!kl+'">alle</button>'+KL.map(k=>'<button class="fchip" data-lkl="'+k+'" aria-pressed="'+(kl===k)+'">'+k+'</button>').join('')+'</div>'
+   +'<div class="sechead" style="margin-top:16px"><span class="count">'+l.length+' Titel'+(out?' · '+out+' ausgeliehen':'')+'</span></div>'
+   +'<div class="list">'+(l.map(lektuereCard).join('')||empty('Noch nichts erfasst. Tippe auf <b>+ '+esc(BS.s)+'</b>.'))+'</div>';
+};
+R.planung=()=>{
+  const kl=KL.includes(UI.pkl)?UI.pkl:KL[0];
+  const l=of('plan').filter(i=>String(i.data.klasse)===kl).sort((a,b)=>(Number(a.data.nr)||99)-(Number(b.data.nr)||99)||a.data.titel.localeCompare(b.data.titel));
+  return head('Jahresplanung','Welche Einheiten in welcher Klassenstufe drankommen, mit '+esc(SUB.sp)+' und Klassenarbeiten. So wissen alle, worauf sie aufbauen können.')
+   +'<div class="tools"><div class="seg" style="flex:1 1 280px">'+KL.map(k=>'<button data-pkl="'+k+'" aria-pressed="'+(k===kl)+'">Kl. '+k+'</button>').join('')+'</div><button class="btnsm noprint" data-print>'+ICON.print+'Drucken</button></div>'
+   +'<div class="sechead" style="margin-top:16px"><h2>Klasse '+esc(kl)+'</h2><span class="count">'+l.length+' Einheiten · '+l.filter(i=>i.data.klassenarbeit).length+' Klassenarbeiten</span></div>'
+   +'<div class="list">'+(l.map((it,ix)=>{const d=it.data;return '<div class="unit" data-open="'+it.id+'"><div class="nr">'+(d.nr||ix+1)+'</div><div class="body" style="flex:1;min-width:0"><div class="t" style="font-weight:700">'+esc(d.titel)+'</div>'
+     +'<div class="tags">'+(d.zeitraum?'<span class="tag">'+esc(d.zeitraum)+'</span>':'')+(d.klassenarbeit?'<span class="tag c" style="--tc:var(--s4)">Klassenarbeit</span>':'')+(d.url?'<a class="tag" href="'+esc(d.url)+'" target="_blank" rel="noopener" data-stop>Material ↗</a>':'')+'</div>'
+     +(d.inhalte?'<div class="d" style="color:var(--mute);font-size:15px;margin-top:4px;white-space:pre-line">'+esc(d.inhalte)+'</div>':'')
+     +(d.grammatik?'<div class="gr"><b>'+esc(SUB.sp)+':</b> '+esc(d.grammatik)+'</div>':'')+'</div></div>'}).join('')||empty('Für Klasse '+esc(kl)+' ist noch nichts geplant. Tippe auf <b>+ Einheit</b>.'))+'</div>';
+};
+R.protokolle=()=>{
+  const q=UI.pq||'';
+  const l=of('protokoll').filter(i=>match(i,q)).sort((a,b)=>b.data.datum.localeCompare(a.data.datum));
+  return head('Protokolle','Sitzungsprotokolle an einem Ort. Beschlüsse kannst du direkt in die Vereinbarungen übernehmen.')
+   +'<div class="tools">'+searchBox('pq','In Protokollen suchen …',q)+'</div>'
+   +'<div class="list" style="margin-top:14px">'+(l.map(protokollCard).join('')||empty('Noch keine Protokolle.'))+'</div>';
+};
+R.vereinbarungen=()=>{
+  const q=UI.vq||'';
+  const l=of('vereinbarung').filter(i=>match(i,q));
+  const cats=[...VKAT,''];
+  let html='';
+  cats.forEach(c=>{const g=l.filter(i=>(i.data.kategorie||'')===c||(!c&&!VKAT.includes(i.data.kategorie)));if(!g.length)return;
+    html+='<section class="sec" style="padding-top:18px"><div class="sechead"><h2>'+esc(c||'Weitere')+'</h2><span class="count">'+g.length+'</span></div><div class="list">'+g.sort((a,b)=>a.data.titel.localeCompare(b.data.titel,'de')).map(vereinbarungCard).join('')+'</div></section>'});
+  return head('Vereinbarungen','Was in der Fachschaft gilt: Leistungsbewertung, Klassenarbeiten, Korrektur, Methoden. Gut für neue Kolleginnen und Kollegen.')
+   +'<div class="tools">'+searchBox('vq','Vereinbarungen durchsuchen …',q)+'<button class="btnsm noprint" data-print>'+ICON.print+'Drucken</button></div>'
+   +(html||'<div style="margin-top:14px">'+empty('Noch keine Vereinbarungen.')+'</div>');
+};
+function keys(){const k=of('einstellung').filter(i=>i.data.art==='notenschluessel').map(i=>({id:i.id,name:i.data.name,grenzen:[i.data.g1,i.data.g2,i.data.g3,i.data.g4,i.data.g5].map(Number)}));return k.length?k:[Object.assign({id:''},DEFKEY)]}
+const half=x=>Math.ceil(x*2-1e-9)/2;
+const nf=x=>String(x).replace('.',',');
+R.noten=()=>{
+  const ks=keys();let k=ks.find(x=>x.id===UI.nk)||ks[0];
+  const max=Number(UI.nmax)||40,p=UI.np===''||UI.np==null?'':Number(UI.np);
+  const ab=k.grenzen.map(g=>half(max*g/100));
+  let note='–',pct='';
+  if(p!==''&&!isNaN(p)&&max>0){const pc=p/max*100;pct=nf(Math.round(pc*10)/10)+' %';note=6;for(let i=0;i<5;i++){if(p>=ab[i]){note=i+1;break}}}
+  const rows=[1,2,3,4,5,6].map(n=>{const from=n<6?ab[n-1]:0,to=n===1?max:ab[n-2]-0.5;return '<tr'+(note===n?' class="hit"':'')+'><td><b>'+n+'</b></td><td>'+nf(from)+' – '+nf(Math.max(from,to))+'</td><td>'+(n<6?'ab '+k.grenzen[n-1]+' %':'darunter')+'</td></tr>'}).join('');
+  return head('Notenrechner','Punkte eingeben, Note ablesen – mit dem Notenschlüssel der Fachschaft. Punkte werden auf halbe Punkte aufgerundet.')
+   +'<div class="tools"><select class="fsel" id="nk" aria-label="Notenschlüssel">'+ks.map(x=>'<option value="'+esc(x.id)+'"'+(x===k?' selected':'')+'>'+esc(x.name)+'</option>').join('')+'</select>'
+   +(k.id?'<button class="btnsm" data-open="'+k.id+'">Schlüssel bearbeiten</button>':'')+'<button class="btnsm" data-new="einstellung">+ Neuer Schlüssel</button></div>'
+   +'<div class="calc" style="margin-top:14px"><div class="field"><label for="nmax">Höchstpunktzahl</label><input id="nmax" type="number" inputmode="decimal" min="1" step="0.5" value="'+esc(max)+'"></div>'
+   +'<div class="field"><label for="np">Erreichte Punkte</label><input id="np" type="number" inputmode="decimal" min="0" step="0.5" value="'+esc(p)+'" placeholder="z. B. 31,5"></div>'
+   +'<div class="result"><div class="note" id="nres"'+(note==='–'?' style="color:var(--line)"':'')+'>'+note+'</div><div><div style="font-weight:700">'+(note==='–'?'Punkte eingeben':'Note '+note)+'</div><div class="pct">'+(pct||'&nbsp;')+'</div></div></div></div>'
+   +'<section class="sec" style="padding-top:18px"><div class="sechead"><h2>Punkteverteilung</h2><span class="count">bei '+nf(max)+' Punkten</span></div>'
+   +'<table class="keys"><thead><tr><th>Note</th><th>Punkte</th><th>Grenze</th></tr></thead><tbody>'+rows+'</tbody></table></section>'
+   +(k.id?'':'<div class="hint">Das ist ein <b>Beispielschlüssel</b>. Legt mit „+ Neuer Schlüssel“ euren eigenen an – er gilt dann für alle in der Fachschaft.</div>');
+};
+R.fachschaft=()=>{
+  const ms=MEMBERS.slice().sort((a,b)=>(a.rolle==='leitung'?0:1)-(b.rolle==='leitung'?0:1)||a.name.localeCompare(b.name,'de'));
+  return head('Fachschaft','Wer dabei ist, dein Name in der App und die Verwaltung.')
+   +'<section class="sec" style="padding-top:16px"><div class="sechead"><h2>Mitglieder</h2><span class="count">'+ms.length+'</span></div><div class="list">'
+   +ms.map(m=>'<div class="member"><div class="avatar">'+esc(initials(m.name))+'</div><div class="body"><div class="t">'+esc(m.name)+(ME&&m.user_id===ME.user_id?' (du)':'')+'</div><div class="d">'+(m.rolle==='leitung'?'Fachschaftsleitung':'Mitglied')+(m.joined_at?' · seit '+fmtTS(m.joined_at):'')+'</div></div>'
+     +(isLeitung()&&ME.user_id!==m.user_id?'<button class="btnsm" data-mem="'+m.user_id+'">Verwalten</button>':'')+'</div>').join('')+'</div></section>'
+   +'<section class="sec"><div class="sechead"><h2>Einstellungen</h2></div>'
+   +'<button class="setting" data-act="name"><span>Mein Name in der App<small>'+esc(ME?ME.name:'')+'</small></span><span class="chev">›</span></button>'
+   +(isLeitung()?'<button class="setting" data-act="code"><span>Fachschafts-Code ändern<small>Neue Kolleginnen und Kollegen treten damit bei.</small></span><span class="chev">›</span></button>':'')
+   +'<a class="setting" href="./" style="text-decoration:none;color:inherit"><span>Andere Fachschaft öffnen<small>Du kannst in mehreren Fachschaften Mitglied sein.</small></span><span class="chev">›</span></a>'
+   +'<button class="setting" data-act="export"><span>Sicherung herunterladen<small>Alle Einträge als Datei (JSON)</small></span><span class="chev">›</span></button>'
+   +'<button class="setting" data-act="theme"><span>Darstellung<small>'+({light:'Hell',dark:'Dunkel'}[UI.theme]||'Wie das Gerät')+'</small></span><span class="chev">›</span></button>'
+   +'<button class="setting" data-act="logout"><span>Abmelden<small>'+(DEMO?'Demo beenden':'Angemeldet als '+esc(USER?USER.name:''))+'</small></span><span class="chev">›</span></button>'
+   +(ME&&ME.rolle!=='leitung'?'<button class="setting" data-act="leave" style="color:var(--danger)"><span>Fachschaft verlassen<small style="color:var(--mute)">Deine Einträge bleiben für die anderen erhalten.</small></span><span class="chev">›</span></button>':'')
+   +'</section>'
+   +'<div class="hint"><b>Datenschutz:</b> Die App ist für Absprachen der Lehrkräfte gedacht. Bitte keine personenbezogenen Daten von Schülerinnen und Schülern eintragen (keine Namen mit Noten, keine Förderdetails). Gespeichert wird auf Servern in der EU (Frankfurt). Nur Mitglieder der Fachschaft können die Einträge sehen.</div>'
+   +'<div class="hint"><b>Neue Kollegin, neuer Kollege?</b> 1. Diese Seite öffnen: <b>'+esc(location.origin+location.pathname+LINK())+'</b> · 2. „Neues Konto“ anlegen (oder mit dem Lernplaner-Konto anmelden) · 3. Name und Fachschafts-Code eingeben.</div>';
+};
+
+/* ---------- Render & Navigation ---------- */
+function nav(){
+  const n=openTasks().filter(mine).length;
+  $('#nav').innerHTML=VIEWS.map(v=>'<a href="#'+v.k+'"'+(v.k===VIEW?' aria-current="page"':'')+'>'+esc(v.l)+(v.k==='aufgaben'&&n?'<span class="badge">'+n+'</span>':'')+'</a>').join('');
+  const cur=$('#nav [aria-current]');if(cur){const nv=$('#nav');const l=cur.offsetLeft-16;if(l<nv.scrollLeft||l+cur.offsetWidth>nv.scrollLeft+nv.clientWidth)nv.scrollLeft=l-40}
+}
+function render(){
+  const v=VIEWS.find(x=>x.k===VIEW)||VIEWS[0];
+  const y=window.scrollY;
+  $('#main').innerHTML=R[v.k]();
+  setSync(SYNC);nav();
+  const ft=v.typ||'termin';
+  $('#fab').hidden=v.k==='fachschaft';
+  $('#fabTxt').textContent=FAB[ft];$('#fab').dataset.typ=ft;
+  if(render.keep)window.scrollTo(0,y);render.keep=false;
+  bindView();
+}
+function go(k){if(!R[k])k='uebersicht';if(k!==VIEW){VIEW=k;window.scrollTo(0,0)}render()}
+window.addEventListener('hashchange',()=>{if(USER||DEMO){closeSheet(true);go(location.hash.slice(1))}});
+$('#fab').onclick=()=>{const t=$('#fab').dataset.typ;openForm(t,null,t==='plan'?{klasse:KL.includes(UI.pkl)?UI.pkl:KL[0]}:t==='aufgabe'?{zustaendig:ME?ME.name:''}:t==='protokoll'?{datum:today(),protokollant:ME?ME.name:''}:null)};
+const rer=()=>{render.keep=true;render()};
+function bindInput(id,set){const el=$('#'+id);if(!el)return;el.oninput=()=>{set(el.value);saveUI();const pos=el.selectionStart;render.keep=true;render();const n=$('#'+id);n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}}
+function bindView(){
+  const m=$('#main');
+  m.onclick=async e=>{
+    const t=e.target.closest('button,a,[data-open],[data-proto]');if(!t)return;
+    if(t.hasAttribute('data-stop'))return;
+    const ds=t.dataset;
+    if(ds.toggle){e.stopPropagation();const it=byId(ds.toggle);const d=Object.assign({},it.data,{erledigt:!it.data.erledigt});if(d.erledigt)d.erledigt_am=today();else delete d.erledigt_am;
+      if(await updateItem(it.id,d)){rer();if(d.erledigt)toast('Erledigt','Rückgängig',async()=>{const x=Object.assign({},it.data,{erledigt:false});delete x.erledigt_am;await updateItem(it.id,x);rer()})}return}
+    if(ds.lend){e.stopPropagation();lend(ds.lend);return}
+    if(ds.open){openForm(byId(ds.open).typ,ds.open);return}
+    if(ds.proto){openProto(ds.proto);return}
+    if(ds.new){openForm(ds.new);return}
+    if(ds.tpast!=null){UI.tPast=ds.tpast==='1';saveUI();rer();return}
+    if(ds.tart!=null){UI.tArt=ds.tart;saveUI();rer();return}
+    if(ds.amine!=null){UI.aMine=ds.amine==='1';saveUI();rer();return}
+    if(t.hasAttribute('data-aall')){UI.aAll=true;rer();return}
+    if(ds.mkl!=null){UI.mf.kl=ds.mkl;saveUI();rer();return}
+    if(ds.mniv!=null){UI.mf.niv=ds.mniv;saveUI();rer();return}
+    if(ds.lkl!=null){UI.lkl=ds.lkl;saveUI();rer();return}
+    if(ds.pkl){UI.pkl=ds.pkl;saveUI();rer();return}
+    if(ds.ics){downloadICS();return}
+    if(t.hasAttribute('data-print')){window.print();return}
+    if(ds.mem){manageMember(ds.mem);return}
+    if(ds.act){settingsAct(ds.act);return}
+  };
+  $$('[data-mf]').forEach(s=>s.onchange=()=>{UI.mf[s.dataset.mf]=s.value;saveUI();rer()});
+  bindInput('mq',v=>UI.mf.q=v);bindInput('lq',v=>UI.lq=v);bindInput('pq',v=>UI.pq=v);bindInput('vq',v=>UI.vq=v);
+  const nk=$('#nk');if(nk)nk.onchange=()=>{UI.nk=nk.value;saveUI();rer()};
+  ['nmax','np'].forEach(id=>{const el=$('#'+id);if(el)el.oninput=()=>{UI[id]=el.value.replace(',','.');saveUI();const pos=el.selectionStart;render.keep=true;render();const n=$('#'+id);n.focus();try{n.setSelectionRange(pos,pos)}catch(x){}}});
+}
+
+/* ---------- Spezielle Aktionen ---------- */
+function lend(id){
+  const it=byId(id),d=it.data;
+  if(d.ausleihe){const x=Object.assign({},d);delete x.ausleihe;updateItem(id,x).then(r=>{if(r){rer();toast('Zurückgegeben')}});return}
+  openSheet('<h2 class="shtitle">Ausleihen</h2><p class="note-s" style="margin-bottom:12px">'+esc(d.titel)+'</p><form class="form" id="lf" novalidate>'
+   +'<div class="field"><label for="l-n">Wer?</label><input id="l-n" list="dl-m2" value="'+esc(ME?ME.name:'')+'"><datalist id="dl-m2">'+MEMBERS.map(m=>'<option value="'+esc(m.name)+'">').join('')+'</datalist></div>'
+   +'<div class="two"><div class="field"><label for="l-k">Für Klasse</label><input id="l-k" placeholder="z. B. 7b"></div><div class="field"><label for="l-b">Bis</label><input id="l-b" type="date"></div></div>'
+   +'<div class="row"><button type="button" class="btn" id="lx">Abbrechen</button><button class="btn primary">Ausleihen</button></div></form>');
+  $('#lx').onclick=()=>closeSheet();
+  $('#lf').onsubmit=async e=>{e.preventDefault();const n=$('#l-n').value.trim();if(!n)return;
+    const x=Object.assign({},d,{ausleihe:{name:n,klasse:$('#l-k').value.trim(),bis:$('#l-b').value,am:today()}});
+    if(await updateItem(id,x)){closeSheet(true);rer();toast('Als ausgeliehen eingetragen')}};
+}
+function openProto(id){
+  const it=byId(id),d=it.data,bs=d.beschluesse||[];
+  openSheet('<h2 class="shtitle">'+esc(d.titel||'Fachschaftssitzung')+'</h2><p class="note-s">'+esc(fmtD(d.datum))+(d.protokollant?' · Protokoll: '+esc(d.protokollant):'')+'</p>'
+   +(d.anwesend?'<div class="label">Anwesend</div><div class="prose">'+esc(d.anwesend)+'</div>':'')
+   +(d.tops?'<div class="label">Tagesordnung und Verlauf</div><div class="prose">'+esc(d.tops)+'</div>':'')
+   +'<div class="label">Beschlüsse</div>'+(bs.length?'<ul class="blist">'+bs.map((b,i)=>'<li><span>'+esc(b)+'</span><button class="btnsm noprint" data-take="'+i+'">→ Vereinbarung</button></li>').join('')+'</ul>':'<p class="note-s">Keine Beschlüsse.</p>')
+   +'<p class="meta">'+esc(byline(it))+'</p>'
+   +'<div class="row"><button class="btn" id="pp">'+'Drucken</button><button class="btn primary" id="pe">Bearbeiten</button></div>'
+   +'<div class="row"><button class="btn" id="pc">Schließen</button></div>');
+  $('#pc').onclick=()=>closeSheet();
+  $('#pe').onclick=()=>{closeSheet(true);openForm('protokoll',id)};
+  $('#pp').onclick=()=>{document.body.classList.add('printsheet');window.print();setTimeout(()=>document.body.classList.remove('printsheet'),500)};
+  $$('[data-take]').forEach(b=>b.onclick=()=>{const txt=bs[Number(b.dataset.take)];closeSheet(true);
+    openForm('vereinbarung',null,{titel:txt.length>70?txt.slice(0,67)+'…':txt,text:txt,seit:d.datum,quelle:'Sitzung vom '+fmtShort(d.datum)+parse(d.datum).getFullYear(),kategorie:'Organisation'})});
+}
+function downloadICS(){
+  const up=upcoming();if(!up.length){toast('Keine kommenden Termine');return}
+  const e=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/[,;]/g,m=>'\\'+m);
+  const st=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//PAGS Kuelsheim//Fachschaften//DE','CALSCALE:GREGORIAN','X-WR-CALNAME:'+FN+' PAGS'];
+  up.forEach(it=>{const d=it.data,k=d.datum.replace(/-/g,'');L.push('BEGIN:VEVENT','UID:'+it.id+'@fachschaft-'+FS+'.pags','DTSTAMP:'+st);
+    if(d.zeit){const [h,m]=d.zeit.split(':').map(Number),end=new Date(2000,0,1,h,m+90);L.push('DTSTART;TZID=Europe/Berlin:'+k+'T'+pad(h)+pad(m)+'00','DTEND;TZID=Europe/Berlin:'+k+'T'+pad(end.getHours())+pad(end.getMinutes())+'00')}
+    else L.push('DTSTART;VALUE=DATE:'+k,'DTEND;VALUE=DATE:'+addDays(d.datum,1).replace(/-/g,''));
+    L.push('SUMMARY:'+e(d.titel),'CATEGORIES:'+e((TERMART[d.art]||TERMART.sonst).l));if(d.ort)L.push('LOCATION:'+e(d.ort));if(d.notiz)L.push('DESCRIPTION:'+e(d.notiz));L.push('END:VEVENT')});
+  L.push('END:VCALENDAR');
+  save('fachschaft-'+FS+'-termine.ics',L.join('\r\n'),'text/calendar');toast(up.length+' Termine exportiert');
+}
+function save(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:type+';charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+function manageMember(uidv){
+  const m=MEMBERS.find(x=>x.user_id===uidv);if(!m)return;
+  openSheet('<h2 class="shtitle">'+esc(m.name)+'</h2><p class="note-s">'+(m.rolle==='leitung'?'Fachschaftsleitung':'Mitglied')+'</p>'
+   +'<button class="setting" id="mr"><span>'+(m.rolle==='leitung'?'Zum Mitglied machen':'Zur Leitung machen')+'<small>Die Leitung kann den Code ändern und Mitglieder verwalten.</small></span></button>'
+   +'<button class="setting" id="md" style="color:var(--danger)"><span>Aus der Fachschaft entfernen<small style="color:var(--mute)">Die Einträge bleiben erhalten. Das Konto selbst wird nicht gelöscht.</small></span></button>'
+   +'<div class="row"><button class="btn" id="mx">Schließen</button></div>');
+  $('#mx').onclick=()=>closeSheet();
+  $('#mr').onclick=async()=>{const r=m.rolle==='leitung'?'mitglied':'leitung';
+    if(DEMO){m.rolle=r}else{const {error}=await CLOUD.rpc('fs_rolle_setzen',{p_fachschaft:FS,p_user:uidv,p_rolle:r});if(error){toast(/Mindestens/.test(error.message)?'Es braucht mindestens eine Leitung.':'Fehler: '+error.message);return}await loadAll()}
+    closeSheet(true);rer();toast('Rolle geändert')};
+  $('#md').onclick=async function(){if(!this.dataset.sure){this.dataset.sure=1;this.querySelector('span').firstChild.textContent='Wirklich entfernen? Nochmal tippen';return}
+    if(DEMO){MEMBERS=MEMBERS.filter(x=>x!==m)}else{const {error}=await CLOUD.from('fs_mitglieder').delete().eq('fachschaft',FS).eq('user_id',uidv);if(error){fail(error);return}await loadAll()}
+    closeSheet(true);rer();toast('Entfernt')};
+}
+function settingsAct(a){
+  if(a==='name'){
+    openSheet('<h2 class="shtitle">Dein Name</h2><p class="note-s" style="margin-bottom:12px">So sehen dich die anderen bei Aufgaben und Einträgen.</p><form class="form" id="nf"><div class="field"><label for="nn">Name</label><input id="nn" value="'+esc(ME.name)+'" placeholder="z. B. Thorsten von Plotho-Kettner"></div><p class="lmsg" id="nm"></p><div class="row"><button type="button" class="btn" id="nx">Abbrechen</button><button class="btn primary">Speichern</button></div></form>');
+    $('#nx').onclick=()=>closeSheet();
+    $('#nf').onsubmit=async e=>{e.preventDefault();const v=$('#nn').value.trim();if(v.length<2){$('#nm').textContent='Bitte deinen Namen eingeben.';return}
+      if(DEMO){ME.name=v}else{const {error}=await CLOUD.rpc('fs_name_aendern',{p_fachschaft:FS,p_name:v});if(error){fail(error);return}await loadAll()}
+      closeSheet(true);rer();toast('Name gespeichert')};
+  }
+  if(a==='code'){
+    openSheet('<h2 class="shtitle">Fachschafts-Code</h2><p class="note-s" style="margin-bottom:12px">Der alte Code gilt danach nicht mehr. Wer schon Mitglied ist, bleibt es. Der Code wird verschlüsselt gespeichert – merke ihn dir oder gib ihn gleich weiter.</p><form class="form" id="cf"><div class="field"><label for="cc">Neuer Code (mind. 6 Zeichen)</label><input id="cc" autocapitalize="none" spellcheck="false" placeholder="z. B. deutsch-pags-2027"></div><p class="lmsg" id="cm"></p><div class="row"><button type="button" class="btn" id="cx">Abbrechen</button><button class="btn primary">Code ändern</button></div></form>');
+    $('#cx').onclick=()=>closeSheet();
+    $('#cf').onsubmit=async e=>{e.preventDefault();const v=$('#cc').value.trim();if(v.length<6){$('#cm').textContent='Mindestens 6 Zeichen.';return}
+      if(!DEMO){const {error}=await CLOUD.rpc('fs_code_setzen',{p_fachschaft:FS,p_code:v});if(error){fail(error);return}}
+      closeSheet(true);toast('Neuer Code: '+v.toLowerCase())};
+  }
+  if(a==='export'){save('fachschaft-'+FS+'-sicherung-'+today()+'.json',JSON.stringify({fachschaft:FS,exportiert:new Date().toISOString(),mitglieder:MEMBERS.map(m=>({name:m.name,rolle:m.rolle})),eintraege:ITEMS},null,2),'application/json');toast('Sicherung heruntergeladen')}
+  if(a==='theme'){const o=['','light','dark'];UI.theme=o[(o.indexOf(UI.theme||'')+1)%3];saveUI();applyTheme();rer()}
+  if(a==='logout'){if(DEMO){location.href=location.pathname;return}logout()}
+  if(a==='leave'){
+    openSheet('<h2 class="shtitle">Fachschaft verlassen?</h2><p class="note-s">Du siehst die Einträge danach nicht mehr. Zum Wiederkommen brauchst du den Fachschafts-Code.</p><div class="row"><button class="btn" id="lx2">Abbrechen</button><button class="btn danger" id="lgo">Verlassen</button></div>');
+    $('#lx2').onclick=()=>closeSheet();
+    $('#lgo').onclick=async()=>{if(DEMO){closeSheet(true);return}const {error}=await CLOUD.from('fs_mitglieder').delete().eq('fachschaft',FS).eq('user_id',USER.id);if(error){fail(error);return}
+      lsDel(cacheKey());closeSheet(true);ME=null;showJoin()};
+  }
+}
+function applyTheme(){if(UI.theme)document.documentElement.setAttribute('data-theme',UI.theme);else document.documentElement.removeAttribute('data-theme')}
+
+/* ---------- Suche über alles ---------- */
+const TYPL={termin:'Termin',aufgabe:'Aufgabe',material:'Material',lektuere:BS.s,plan:'Jahresplanung',protokoll:'Protokoll',vereinbarung:'Vereinbarung',pinnwand:'Pinnwand',einstellung:'Notenschlüssel'};
+function openSearch(){
+  openSheet('<h2 class="shtitle">Suchen</h2>'+searchBox('gq','Alles durchsuchen …','')+'<div class="list" id="gres" style="margin-top:12px"></div>');
+  const inp=$('#gq'),out=$('#gres');setTimeout(()=>inp.focus(),50);
+  inp.oninput=()=>{const q=inp.value.trim();if(q.length<2){out.innerHTML='';return}
+    const r=ITEMS.filter(i=>match(i,q)).slice(0,30);
+    out.innerHTML=r.map(i=>'<div class="card" data-g="'+i.id+'"><div class="body"><div class="t">'+esc(i.data.titel||i.data.name||i.data.text||'')+'</div><div class="tags"><span class="tag">'+TYPL[i.typ]+'</span>'+(i.data.datum?'<span class="tag">'+fmtShort(i.data.datum)+'</span>':'')+'</div></div></div>').join('')||empty('Nichts gefunden.');
+    out.querySelectorAll('[data-g]').forEach(c=>c.onclick=()=>{const it=byId(c.dataset.g);closeSheet(true);
+      const v={termin:'termine',aufgabe:'aufgaben',material:'material',lektuere:'lektueren',plan:'planung',protokoll:'protokolle',vereinbarung:'vereinbarungen',pinnwand:'uebersicht',einstellung:'noten'}[it.typ];
+      if(it.typ==='plan')UI.pkl=String(it.data.klasse);
+      location.hash=v;go(v);if(it.typ==='protokoll')openProto(it.id);else openForm(it.typ,it.id)})};
+}
+$('#btnSearch').onclick=openSearch;
+
+/* ---------- Anmeldung & Beitritt ---------- */
+const toLogin=u=>u+'@'+LOGIN_DOMAIN;
+const USER_RE=/^[a-z0-9][a-z0-9._-]{2,29}$/;
+function authMsg(e){const m=(e&&e.message)||'';
+  if(/Invalid login credentials/i.test(m))return 'Benutzername oder Passwort stimmt nicht.';
+  if(/already registered|already exists/i.test(m))return 'Diesen Benutzernamen gibt es schon. Wähle bitte einen anderen.';
+  if(/Password should be|weak/i.test(m))return 'Das Passwort ist zu kurz oder zu einfach.';
+  if(/Signups not allowed|signup.*disabled/i.test(m))return 'Neue Konten können gerade nicht angelegt werden.';
+  if(/rate limit|too many/i.test(m))return 'Zu viele Versuche. Warte kurz und probier es noch einmal.';
+  if(/fetch|network|Failed/i.test(m))return 'Keine Verbindung zum Server. Bist du online?';
+  return m||'Unbekannter Fehler.'}
+function showView(login){$('#btnPick').hidden=false;$('#loginView').hidden=!login;$('#main').hidden=login;$('#nav').hidden=login;$('#btnSearch').hidden=login;$('#fab').hidden=true}
+function showLogin(msg,mode){
+  mode=mode||'in';showView(true);
+  $('#loginView').innerHTML='<div class="login">'
+   +'<div style="display:flex;gap:14px;align-items:center">'+iconSVG(SUB,56)+'<h1 style="margin:0">'+esc(FN)+'</h1></div><p class="lead" style="margin:0">Termine, Material, Protokolle und Absprachen der '+esc(FN)+' an einem Ort. Melde dich mit deinem Konto vom PAGS Lernplaner an oder leg hier eins an.</p>'
+   +'<div class="lseg" role="group" aria-label="Anmelden oder registrieren"><button data-lmode="in" aria-pressed="'+(mode==='in')+'">Anmelden</button><button data-lmode="up" aria-pressed="'+(mode==='up')+'">Neues Konto</button></div>'
+   +'<form id="loginForm" class="form" novalidate>'
+   +'<div class="field"><label for="lg-user">Benutzername</label><input id="lg-user" autocomplete="username" autocapitalize="none" spellcheck="false"'+(mode==='up'?' placeholder="z. B. dein Kürzel"':'')+'></div>'
+   +'<div class="field"><label for="lg-pass">Passwort</label><input id="lg-pass" type="password" autocomplete="'+(mode==='up'?'new-password':'current-password')+'"></div>'
+   +(mode==='up'?'<div class="field"><label for="lg-pass2">Passwort wiederholen</label><input id="lg-pass2" type="password" autocomplete="new-password"></div>'
+     +'<p class="note-s">Benutzername: 3–30 Zeichen, nur Kleinbuchstaben, Ziffern, Punkt, Bindestrich – am besten dein Kürzel. Passwort: mindestens 8 Zeichen. Merk es dir gut, es gibt keine E-Mail zum Zurücksetzen.</p>':'')
+   +'<p class="lmsg" id="lg-msg" role="alert">'+(msg?esc(msg):'')+'</p>'
+   +'<button class="bigbtn" id="lg-go">'+(mode==='up'?'Konto anlegen':'Anmelden')+'</button></form>'
+   +'<a class="ghostbtn" href="'+LINK('demo')+'">Erst einmal ansehen: Demo ohne Anmeldung</a><a class="ghostbtn" href="./">Andere Fachschaft wählen</a>'
+   +'<p class="note-s" style="text-align:center">Passwort vergessen? Wende dich an Thorsten von Plotho-Kettner.</p></div>';
+  $$('[data-lmode]').forEach(b=>b.onclick=()=>showLogin('',b.dataset.lmode));
+  const say=t=>{$('#lg-msg').textContent=t};
+  $('#loginForm').onsubmit=async e=>{e.preventDefault();
+    const u=$('#lg-user').value.trim().toLowerCase(),pw=$('#lg-pass').value;
+    if(!USER_RE.test(u)){say('Der Benutzername passt nicht: 3–30 Zeichen, nur a–z, 0–9, Punkt und Bindestrich.');return}
+    if(pw.length<8){say('Das Passwort braucht mindestens 8 Zeichen.');return}
+    const btn=$('#lg-go');btn.disabled=true;say(mode==='up'?'Konto wird angelegt …':'Anmeldung läuft …');
+    let res;
+    try{
+      if(mode==='up'){
+        if(pw!==$('#lg-pass2').value){btn.disabled=false;say('Die Passwörter sind nicht gleich.');return}
+        res=await CLOUD.auth.signUp({email:toLogin(u),password:pw,options:{data:{username:u}}});
+        if(!res.error&&!res.data.session){btn.disabled=false;say('Konto angelegt, aber noch nicht freigeschaltet. Bitte Thorsten von Plotho-Kettner Bescheid sagen.');return}
+      }else res=await CLOUD.auth.signInWithPassword({email:toLogin(u),password:pw});
+    }catch(err){res={error:err}}
+    if(res.error){btn.disabled=false;say(authMsg(res.error));return}
+    await startUser(res.data.user);
+  };
+}
+function showJoin(msg){
+  showView(true);
+  $('#loginView').innerHTML='<div class="login"><h1>Beitreten</h1><p class="lead" style="margin:0">Du bist als <b>'+esc(USER.name)+'</b> angemeldet. Gib jetzt deinen Namen und den Code der <b>'+esc(FN)+'</b> ein. Den Code bekommst du von der Fachschaftsleitung. Für jedes Fach gibt es einen eigenen Code.</p>'
+   +'<form class="form" id="jf" novalidate><div class="field"><label for="j-n">Dein Name (so sehen dich die anderen)</label><input id="j-n" autocomplete="name" placeholder="z. B. Anna Becker"></div>'
+   +'<div class="field"><label for="j-c">Fachschafts-Code</label><input id="j-c" autocapitalize="none" spellcheck="false" autocomplete="off"></div>'
+   +'<p class="lmsg" id="j-m" role="alert">'+esc(msg||'')+'</p><button class="bigbtn" id="j-go">Fachschaft beitreten</button></form>'
+   +'<a class="ghostbtn" href="./">Andere Fachschaft wählen</a><button class="ghostbtn" id="j-out">Abmelden</button></div>';
+  $('#j-out').onclick=logout;
+  $('#jf').onsubmit=async e=>{e.preventDefault();const n=$('#j-n').value.trim(),c=$('#j-c').value.trim(),say=t=>$('#j-m').textContent=t;
+    if(n.length<2){say('Bitte deinen Namen eingeben.');return}if(!c){say('Bitte den Code eingeben.');return}
+    $('#j-go').disabled=true;say('Prüfe den Code …');
+    const {data,error}=await CLOUD.rpc('fs_beitreten',{p_fachschaft:FS,p_code:c,p_name:n});
+    $('#j-go').disabled=false;
+    if(error){say(/Zu viele/.test(error.message)?'Zu viele Versuche. Probier es in einer Stunde noch einmal.':authMsg(error));return}
+    if(data!=='ok'){say('Der Code stimmt nicht.');return}
+    await enter();toast('Willkommen in der '+FN+'!');
+  };
+}
+async function startUser(user){
+  USER={id:user.id,name:(user.user_metadata&&user.user_metadata.username)||(user.email||'').split('@')[0]};
+  lsSet(KEY+':last',JSON.stringify(USER));
+  await enter();
+  if(user.user_metadata&&user.user_metadata.pw_reset)forcePw();
+}
+async function enter(){
+  const ok=await loadAll();
+  if(!ok){let c=null;try{c=JSON.parse(lsGet(cacheKey()))}catch(e){}
+    if(c&&c.me){ITEMS=c.items||[];MEMBERS=c.members||[];ME=c.me;startApp();setSync('offline');toast('Offline: du siehst den zuletzt geladenen Stand.');return}
+    showView(true);$('#loginView').innerHTML='<div class="login"><h1>Keine Verbindung</h1><p class="lead" style="margin:0">Der Server ist gerade nicht erreichbar. Bitte prüfe deine Internetverbindung und lade die Seite neu.</p><button class="bigbtn" onclick="location.reload()">Neu laden</button></div>';return}
+  if(!ME){showJoin();return}
+  startApp();
+}
+function forcePw(){
+  openSheet('<h2 class="shtitle">Neues Passwort wählen</h2><p class="note-s">Dein Passwort wurde zurückgesetzt. Wähle jetzt ein eigenes Passwort, das nur du kennst (mindestens 8 Zeichen).</p>'
+   +'<div class="form" style="margin-top:12px"><div class="field"><label for="fp1">Neues Passwort</label><input id="fp1" type="password" autocomplete="new-password"></div>'
+   +'<div class="field"><label for="fp2">Wiederholen</label><input id="fp2" type="password" autocomplete="new-password"></div>'
+   +'<p class="lmsg" id="fpm" role="alert"></p><button class="bigbtn" id="fpgo">Passwort speichern</button></div>',null,true);
+  $('#fpgo').onclick=async()=>{const a=$('#fp1').value,b=$('#fp2').value,m=$('#fpm');
+    if(a.length<8){m.textContent='Mindestens 8 Zeichen.';return}if(a!==b){m.textContent='Die Passwörter sind nicht gleich.';return}
+    $('#fpgo').disabled=true;
+    const {error}=await CLOUD.auth.updateUser({password:a,data:{pw_reset:false}});
+    if(error){$('#fpgo').disabled=false;m.textContent=authMsg(error);return}
+    try{await CLOUD.rpc('clear_pw_reset')}catch(e){}
+    closeSheet(true);toast('Passwort gespeichert')};
+}
+async function logout(){
+  lsDel(cacheKey());lsDel(KEY+':last');
+  try{await CLOUD.auth.signOut()}catch(e){}
+  USER=null;ME=null;ITEMS=[];MEMBERS=[];$('#main').innerHTML='';showLogin('Du bist abgemeldet.');
+}
+function startApp(){showView(false);const h=location.hash.slice(1);VIEW=R[h]?h:'uebersicht';render()}
+
+/* ---------- Demo ---------- */
+function demoData(){
+  const t=today(),D=n=>addDays(t,n),ts=n=>new Date(Date.now()-n*864e5).toISOString();
+  const P=['Thorsten von Plotho-Kettner','Anna Becker','Markus Schäfer','Sabine Wolf','Jonas Keller'];
+  MEMBERS=P.map((n,i)=>({user_id:'demo'+i,name:n,rolle:i===0?'leitung':'mitglied',joined_at:ts(40-i*3)}));
+  ME=MEMBERS[0];USER={id:'demo0',name:'demo'};
+  let c=0;const I=(typ,data,by,age)=>({id:'d'+(c++),typ,data,created_name:P[by||0],updated_name:P[by||0],created_at:ts(age==null?c:age),updated_at:ts(age==null?c:age)});
+  if(FS!=='deutsch'){demoGeneric(I,D,P);return}
+  ITEMS=[
+    I('termin',{titel:'Fachschaftssitzung Deutsch',art:'sitzung',datum:D(6),zeit:'14:00',ort:'Lehrerzimmer',notiz:'TOP: Bewertungsraster Erörterung, Lektürekiste Kl. 7, VERA 8'}),
+    I('termin',{titel:'Abgabe Klassenarbeitsvorschläge HSA',art:'frist',datum:D(13),klassen:['9']},1),
+    I('termin',{titel:'Vorlesewettbewerb – Schulentscheid',art:'veranstaltung',datum:D(27),zeit:'10:00',ort:'Aula',klassen:['6']},3),
+    I('termin',{titel:'VERA 8 Deutsch (Beispieltermin)',art:'pruefung',datum:D(110),klassen:['8']},2),
+    I('termin',{titel:'Schriftliche Prüfung Deutsch RSA (Beispieltermin)',art:'pruefung',datum:D(190),zeit:'08:30',klassen:['10']},0),
+    I('termin',{titel:'Fachschaftssitzung Deutsch',art:'sitzung',datum:D(-21),zeit:'14:00',ort:'Lehrerzimmer'}),
+    I('aufgabe',{titel:'Bewertungsraster Erörterung überarbeiten',zustaendig:'Anna Becker',faellig:D(5)},0),
+    I('aufgabe',{titel:'Lektürebestand Klasse 7 zählen',zustaendig:'Thorsten von Plotho-Kettner',faellig:D(3)},1),
+    I('aufgabe',{titel:'Einladung Vorlesewettbewerb an die Klassen 6',zustaendig:'Sabine Wolf',faellig:D(-1)},3),
+    I('aufgabe',{titel:'Material Grammatikrahmen Kl. 5 in den Materialpool',zustaendig:'Thorsten von Plotho-Kettner',faellig:D(10)},0),
+    I('aufgabe',{titel:'Bestellliste Arbeitshefte an die Schulleitung',zustaendig:'Markus Schäfer',erledigt:true,erledigt_am:D(-4)},2),
+    I('material',{titel:'Grammatik im Griff – Nachschlageheft',url:'https://example.org/grammatik-im-griff',art:'Arbeitsblatt',bereich:'Grammatik und Sprachgebrauch',klassen:['5','6','7','8','9','10'],niveau:['G','M','E'],beschreibung:'A5-Heft zum Grammatikrahmen BW, kopierfertig zum Klammern.'},0,2),
+    I('material',{titel:'Kurzgeschichte „Das Brot“ – Analyse in drei Niveaus',url:'https://example.org/das-brot',art:'Unterrichtseinheit',bereich:'Lesen und Literatur',klassen:['8','9'],niveau:['G','M','E'],beschreibung:'4 Stunden, mit Lesestrategien und Schreibauftrag.'},1,5),
+    I('material',{titel:'Bewertungsraster Erörterung',url:'https://example.org/raster-eroerterung',art:'Bewertungsraster',bereich:'Schreiben',klassen:['9','10'],niveau:['M','E']},1,9),
+    I('material',{titel:'Klassenarbeit Bericht schreiben',url:'https://example.org/ka-bericht',art:'Klassenarbeit',bereich:'Schreiben',klassen:['6'],niveau:['G','M'],beschreibung:'Mit Erwartungshorizont.'},3,12),
+    I('material',{titel:'Lernstand 5 – Diagnosebogen Rechtschreibung',url:'https://example.org/diagnose-rs',art:'Diagnose / Lernstand',bereich:'Rechtschreibung',klassen:['5'],niveau:['G','M','E']},2,20),
+    I('lektuere',{titel:'Rico, Oskar und die Tieferschatten',autor:'Andreas Steinhöfel',klassen:['5','6'],niveau:['G','M','E'],bestand:28,standort:'Fachraum D, Regal 2',ausleihe:{name:'Sabine Wolf',klasse:'6a',bis:D(30),am:D(-10)}},3),
+    I('lektuere',{titel:'Tschick',autor:'Wolfgang Herrndorf',klassen:['8','9'],niveau:['M','E'],bestand:30,standort:'Fachraum D, Regal 3'},0),
+    I('lektuere',{titel:'Die Welle',autor:'Morton Rhue',klassen:['8','9'],niveau:['G','M'],bestand:26,standort:'Bibliothek'},2),
+    I('lektuere',{titel:'Der Sandmann',autor:'E. T. A. Hoffmann',klassen:['10'],niveau:['M','E'],bestand:25,standort:'Fachraum D, Regal 3',notiz:'Mit Lektürehilfe im Schrank.'},1),
+    I('plan',{klasse:'5',nr:1,titel:'Ankommen: Sich und andere vorstellen',zeitraum:'Sept.–Okt.',inhalte:'Erzählen, zuhören, Gesprächsregeln',grammatik:'Wortarten: Nomen, Verb, Adjektiv'}),
+    I('plan',{klasse:'5',nr:2,titel:'Märchen lesen und schreiben',zeitraum:'Nov.–Dez.',inhalte:'Merkmale von Märchen, eigene Märchen schreiben',grammatik:'Zeitformen: Präteritum',klassenarbeit:true}),
+    I('plan',{klasse:'5',nr:3,titel:'Jugendbuch: Rico, Oskar und die Tieferschatten',zeitraum:'Jan.–Feb.',inhalte:'Figuren beschreiben, Lesetagebuch',grammatik:'Satzarten und Satzzeichen'}),
+    I('plan',{klasse:'5',nr:4,titel:'Sachtexte verstehen',zeitraum:'März–Apr.',inhalte:'Lesestrategien, Informationen entnehmen',klassenarbeit:true}),
+    I('plan',{klasse:'9',nr:1,titel:'Bewerbung und Lebenslauf',zeitraum:'Sept.–Okt.',inhalte:'Anschreiben, Lebenslauf, Vorstellungsgespräch',grammatik:'Konjunktiv in der indirekten Rede'}),
+    I('plan',{klasse:'9',nr:2,titel:'Kurzgeschichten analysieren',zeitraum:'Nov.–Jan.',inhalte:'Inhaltsangabe, Figurenanalyse',grammatik:'Satzgefüge, Kommasetzung',klassenarbeit:true}),
+    I('protokoll',{datum:D(-21),titel:'Fachschaftssitzung Deutsch',protokollant:'Markus Schäfer',anwesend:'Thorsten von Plotho-Kettner, Anna Becker, Markus Schäfer, Sabine Wolf, Jonas Keller',
+      tops:'TOP 1: Rückblick auf die Abschlussprüfungen\nTOP 2: Grammatikrahmen BW – Umsetzung in Klasse 5–10\nTOP 3: Lektürebestand und Neuanschaffungen\nTOP 4: Verschiedenes',
+      beschluesse:['In Klasse 5 bis 8 werden pro Schuljahr vier Klassenarbeiten geschrieben.','Das Nachschlageheft „Grammatik im Griff“ wird in allen Klassen eingesetzt.','Neue Lektüren werden über die Fachschaftsleitung bestellt.']},2,21),
+    I('vereinbarung',{titel:'Anzahl der Klassenarbeiten',kategorie:'Klassenarbeiten',text:'Klasse 5–8: vier Klassenarbeiten pro Schuljahr. Klasse 9–10: drei Klassenarbeiten plus Prüfungsvorbereitung.',seit:D(-21),quelle:'Sitzung vom '+fmtShort(D(-21))}),
+    I('vereinbarung',{titel:'Gewichtung schriftlich : mündlich',kategorie:'Leistungsbewertung',text:'Klassenarbeiten 50 %, mündliche und sonstige Leistungen 50 %.',seit:D(-60)}),
+    I('vereinbarung',{titel:'Einheitliche Korrekturzeichen',kategorie:'Korrektur',text:'R = Rechtschreibung, Z = Zeichensetzung, Gr = Grammatik, A = Ausdruck, I = Inhalt. Liste hängt im Fachraum.',seit:D(-60)},1),
+    I('vereinbarung',{titel:'Grammatik im Griff',kategorie:'Unterricht und Methoden',text:'Das Nachschlageheft wird in allen Klassen eingesetzt und bleibt bei den Schülerinnen und Schülern.',seit:D(-21),quelle:'Sitzung vom '+fmtShort(D(-21))}),
+    I('pinnwand',{text:'Die neue Lektürekiste „Tschick“ steht im Fachraum, Regal 3. Bitte über die App ausleihen.',wichtig:true},0,1),
+    I('pinnwand',{text:'Wer hat noch Kopiervorlagen zum Vorlesewettbewerb? Gern in den Materialpool.'},3,2),
+    I('einstellung',{art:'notenschluessel',name:'Standard der Fachschaft',g1:87,g2:73,g3:59,g4:45,g5:18},0,30)
+  ];
+}
+
+function demoGeneric(I,D,P){
+  const n=SUB.n,b=BEREICHE,k=KL,sit='Fachschaftssitzung '+n,last=k[k.length-1];
+  ITEMS=[
+    I('termin',{titel:sit,art:'sitzung',datum:D(6),zeit:'14:00',ort:'Lehrerzimmer',notiz:'TOP: Jahresplanung, Klassenarbeiten, Material, Verschiedenes'}),
+    I('termin',{titel:'Abgabe Klassenarbeitsvorschläge',art:'frist',datum:D(13),klassen:[last]},1),
+    I('termin',{titel:'Fortbildung '+n+' (Beispiel)',art:'veranstaltung',datum:D(34),zeit:'09:00',ort:'online'},3),
+    I('termin',{titel:sit,art:'sitzung',datum:D(-21),zeit:'14:00',ort:'Lehrerzimmer'}),
+    I('aufgabe',{titel:'Bewertungsraster für Präsentationen abstimmen',zustaendig:P[1],faellig:D(5)},0),
+    I('aufgabe',{titel:BS.v+' prüfen und Liste aktualisieren',zustaendig:P[0],faellig:D(3)},1),
+    I('aufgabe',{titel:'Material „'+b[0]+'“ in den Materialpool',zustaendig:P[3],faellig:D(-1)},3),
+    I('aufgabe',{titel:'Bestellliste an die Schulleitung',zustaendig:P[2],erledigt:true,erledigt_am:D(-4)},2),
+    I('material',{titel:'Einstieg „'+b[0]+'“ – Arbeitsblätter in drei Niveaus',url:'https://example.org/'+FS+'-1',art:'Arbeitsblatt',bereich:b[0],klassen:[k[0]],niveau:['G','M','E'],beschreibung:'Kopierfertig, mit Lösungen.'},0,2),
+    I('material',{titel:'Klassenarbeit Kl. '+k[Math.min(1,k.length-1)]+' – '+b[1],url:'https://example.org/'+FS+'-2',art:'Klassenarbeit',bereich:b[1],klassen:[k[Math.min(1,k.length-1)]],niveau:['G','M'],beschreibung:'Mit Erwartungshorizont.'},1,6),
+    I('material',{titel:'Bewertungsraster Präsentation',url:'https://example.org/'+FS+'-3',art:'Bewertungsraster',bereich:b[b.length-1],klassen:k.slice(-3),niveau:['G','M','E']},2,10),
+    I('material',{titel:'Unterrichtseinheit „'+b[2]+'“',url:'https://example.org/'+FS+'-4',art:'Unterrichtseinheit',bereich:b[2],klassen:[k[Math.min(2,k.length-1)]],niveau:['M','E'],beschreibung:'6 Stunden, mit Stundenverlauf.'},3,15),
+    I('lektuere',{titel:'Klassensatz Schulbuch '+n,autor:'Verlag',klassen:k,niveau:['G','M','E'],bestand:28,standort:'Fachraum, Regal 1',ausleihe:{name:P[3],klasse:k[0]+'a',bis:D(30),am:D(-10)}},3),
+    I('lektuere',{titel:BS===BS_LIT?'Lektüre (Beispiel)':BS.s+' (Beispiel)',autor:'',klassen:k.slice(-2),niveau:['M','E'],bestand:15,standort:'Fachraum, Schrank 2'},0),
+    I('plan',{klasse:k[0],nr:1,titel:b[0],zeitraum:'Sept.–Okt.',inhalte:'Grundlagen, Einstieg, Methoden'}),
+    I('plan',{klasse:k[0],nr:2,titel:b[1],zeitraum:'Nov.–Dez.',inhalte:'Vertiefung, Übung',klassenarbeit:true}),
+    I('plan',{klasse:k[0],nr:3,titel:b[2],zeitraum:'Jan.–März',inhalte:'Anwendung, Projekt'}),
+    I('protokoll',{datum:D(-21),titel:sit,protokollant:P[2],anwesend:P.join(', '),
+      tops:'TOP 1: Rückblick auf das letzte Schuljahr\nTOP 2: Jahresplanung '+k[0]+'–'+last+'\nTOP 3: '+BS.v+' und Anschaffungen\nTOP 4: Verschiedenes',
+      beschluesse:['Pro Halbjahr werden mindestens zwei Klassenarbeiten geschrieben.','Material wird im Materialpool der App geteilt.','Anschaffungen laufen über die Fachschaftsleitung.']},2,21),
+    I('vereinbarung',{titel:'Gewichtung schriftlich : mündlich',kategorie:'Leistungsbewertung',text:'Schriftliche Leistungen 50 %, mündliche und sonstige Leistungen 50 %. (Beispiel – bitte eure Regel eintragen.)',seit:D(-60)}),
+    I('vereinbarung',{titel:'Material teilen',kategorie:'Organisation',text:'Material wird im Materialpool der App geteilt.',seit:D(-21),quelle:'Sitzung vom '+fmtShort(D(-21))}),
+    I('pinnwand',{text:'Willkommen in der '+FN+'! Hier stehen kurze Infos für alle.',wichtig:true},0,1),
+    I('einstellung',{art:'notenschluessel',name:'Standard der Fachschaft',g1:87,g2:73,g3:59,g4:45,g5:18},0,30)
+  ];
+}
+
+/* ---------- Auswahl der Fachschaft ---------- */
+async function showPicker(){
+  document.title='Fachschaften PAGS';
+  $('#nav').hidden=true;$('#loginView').hidden=true;$('#fab').hidden=true;$('#btnSearch').hidden=true;$('#btnPick').hidden=true;
+  const m=$('#main');m.hidden=false;
+  let mine=new Set(),name='';
+  const draw=()=>{
+    m.innerHTML='<div class="intro"><div class="eyebrow">Gemeinschaftsschule · Sekundarstufe I</div><h1>Fachschaften</h1><p class="lead">Wähle deine Fachschaft. Jede Fachschaft hat ihren eigenen Bereich mit Terminen, Aufgaben, Materialpool, Jahresplanung, Protokollen, Vereinbarungen und Notenrechner. Beitreten kannst du mit dem Code deiner Fachschaftsleitung – auch in mehreren Fächern.</p>'
+     +(name?'<p class="lead" style="margin-top:10px">Angemeldet als <b>'+esc(name)+'</b>'+(mine.size?' · Mitglied in '+mine.size+' '+(mine.size===1?'Fachschaft':'Fachschaften'):'')+'</p>':'')+'</div>'
+     +(mine.size?'<div class="gtitle">Meine Fachschaften</div><ul class="picker">'+SUBJECTS.filter(x=>mine.has(x.k)).map(tile).join('')+'</ul>':'')
+     +GROUPS.map(g=>'<div class="gtitle">'+esc(g)+'</div><ul class="picker">'+SUBJECTS.filter(x=>x.g===g).map(tile).join('')+'</ul>').join('')
+     +'<div class="hint" style="margin-top:30px"><b>Erst ausprobieren?</b> Jede Fachschaft gibt es als Demo mit Beispielinhalten: <a href="?fach=deutsch&demo">Deutsch</a> · <a href="?fach=mathematik&demo">Mathematik</a> · <a href="?fach=englisch&demo">Englisch</a> · <a href="?fach=sport&demo">Sport</a></div>';
+  };
+  const tile=x=>'<li><a href="?fach='+x.k+'">'+iconSVG(x,64)+(mine.has(x.k)?'<span class="mem" title="Mitglied"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>':'')+'<b>'+esc(x.n)+'</b></a></li>';
+  draw();
+  const configured=!!(CFG.supabaseUrl&&CFG.supabaseAnonKey);
+  if(configured&&window.supabase){
+    try{
+      CLOUD=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'pags-lernplaner-auth'}});
+      const ses=(await CLOUD.auth.getSession()).data.session;
+      if(ses){const u=ses.user;name=(u.user_metadata&&u.user_metadata.username)||(u.email||'').split('@')[0];
+        const r=await CLOUD.from('fs_mitglieder').select('fachschaft').eq('user_id',u.id);
+        if(!r.error)mine=new Set(r.data.map(x=>x.fachschaft));draw()}
+    }catch(e){}
+  }
+}
+
+/* ---------- Start ---------- */
+async function boot(){
+  applyTheme();
+  if(!FS){showPicker();return}
+  document.title=FN+' · PAGS';
+  $('#appname').innerHTML=esc(FN)+'<small>Pater-Alois-Grimm-Schule Külsheim</small>';
+  $('#appname').insertAdjacentHTML('beforebegin',iconSVG(SUB));
+  $('#footFach').textContent=FN;$('#footDemo').href=LINK('demo');
+  window.addEventListener('scroll',()=>$('#nav').classList.toggle('stuck',window.scrollY>60),{passive:true});
+  if(DEMO){demoData();$('#demoBanner').hidden=false;$('#demoBanner').innerHTML='<div class="demo"><b>Demo '+esc(FN)+':</b> So sieht die App mit Beispielinhalten aus. Änderungen werden nicht gespeichert. <a href="'+LINK()+'">Zur Anmeldung</a> · <a href="./">Anderes Fach</a></div>';SYNC='demo';startApp();return}
+  const configured=!!(CFG.supabaseUrl&&CFG.supabaseAnonKey);
+  if(configured&&window.supabase){
+    CLOUD=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'pags-lernplaner-auth'}});
+    let session=null;try{session=(await CLOUD.auth.getSession()).data.session}catch(e){}
+    if(session){await startUser(session.user);return}
+    showLogin();return;
+  }
+  let last=null;try{last=JSON.parse(lsGet(KEY+':last'))}catch(e){}
+  if(last){USER=last;await enter();return}
+  showView(true);$('#loginView').innerHTML='<div class="login"><h1>Keine Verbindung</h1><p class="lead" style="margin:0">Für die Anmeldung brauchst du Internet.</p><a class="ghostbtn" href="'+LINK('demo')+'">Demo ansehen</a></div>';
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&USER&&ME&&!DEMO)loadAll(true)});
+setInterval(()=>{if(!document.hidden&&USER&&ME&&!DEMO&&!sheetOpen())loadAll(true)},60000);
+window.addEventListener('online',()=>{if(USER&&ME&&!DEMO)loadAll(true)});
+boot();
+})();
+</script>
+</body>
+</html>
