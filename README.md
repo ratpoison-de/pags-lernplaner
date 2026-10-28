@@ -6,6 +6,12 @@ Entwickelt von Thorsten von Plotho-Kettner.
 
 **App:** https://ratpoison-de.github.io/pags-lernplaner/
 
+## Übersichtsseite aller Apps
+
+**https://ratpoison-de.github.io/pags-lernplaner/apps/**
+
+Alle Apps (Lernplaner, Wochenstapel, Lernbegleiter, Lehrkraft-Seite, PAGS-App, Tag der Berufe, Wochenstapel für Android und als Datei) mit Anleitungen als PDF. Dateien im Ordner `apps/`.
+
 ## So funktioniert es
 
 - Die App selbst liegt auf GitHub Pages (diese Dateien).

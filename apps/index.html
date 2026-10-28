@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PAGS Apps</title>
+<meta name="description" content="Alle Web-Apps für die Pater-Alois-Grimm-Schule Külsheim mit Anleitungen. Entwickelt von Thorsten von Plotho-Kettner.">
+<meta name="author" content="Thorsten von Plotho-Kettner">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="img/pags-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: helle Übersicht in Gruppen nach Zielgruppe, Karten mit Vorschau, Öffnen-Knopf und Anleitung */
+:root{
+  --bg:#F7F7F6; --card:#FFFFFF; --ink:#2A2A2B; --mute:#6C6C70; --line:#E2E2DF; --chip:#F0F0EE;
+  --red:#AD120D; --red-soft:#FBEDEC; --navy:#1B2A6B; --dark:#383838;
+  --f-display:"Archivo","Arial Black",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px;border-radius:6px}
+
+/* Kopf */
+header.top{background:var(--card);border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.topbar img{height:52px;width:auto}
+.topnav{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.topnav a{text-decoration:none;font-weight:700;font-size:15px;color:var(--mute);padding:8px 12px;border-radius:8px}
+.topnav a:hover{background:var(--chip);color:var(--ink)}
+.hero{padding-block:44px 34px}
+.kicker{font-family:var(--f-display);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,6vw,58px);line-height:1;letter-spacing:-.01em;text-transform:uppercase;margin:10px 0 16px;text-wrap:balance}
+.lead{font-size:clamp(18px,2.2vw,21px);color:var(--mute);max-width:62ch;margin:0}
+.dots{height:6px;margin-top:28px;background:radial-gradient(circle,var(--ink) 2px,transparent 2.5px) 0 50%/11px 6px repeat-x;opacity:.75;max-width:420px}
+.facts{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:22px;font-size:15px;color:var(--mute)}
+.facts b{color:var(--ink)}
+
+/* Gruppen */
+section.group{padding-block:40px 8px}
+.ghead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.ghead h2{font-family:var(--f-display);font-weight:800;font-size:26px;text-transform:uppercase;margin:0;letter-spacing:.01em}
+.ghead p{margin:0;color:var(--mute);font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+
+/* Karten */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:132px 1fr;min-width:0}
+.thumb{background:var(--chip);border-right:1px solid var(--line);overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:0 0}
+.body{padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--chip);color:var(--mute)}
+.tag.login{background:var(--red-soft);color:var(--red)}
+.card h3{font-family:var(--f-display);font-weight:800;font-size:21px;line-height:1.15;margin:2px 0 0}
+.card p{margin:0;color:var(--mute);font-size:15.5px}
+.card ul{margin:0;padding-left:18px;color:var(--mute);font-size:15px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:8px}
+.btn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:700;font-size:15px;padding:10px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn.primary:hover{background:#8f0f0b;border-color:#8f0f0b}
+.btn svg{width:17px;height:17px;flex:none}
+.url{font-size:13px;color:var(--mute);overflow-wrap:anywhere}
+
+/* Hinweise */
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;padding-block:44px 8px}
+.note{border-left:4px solid var(--red);padding:2px 0 2px 16px}
+.note h3{font-family:var(--f-display);font-size:17px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px}
+.note p{margin:0;color:var(--mute);font-size:15.5px}
+
+footer{margin-top:56px;background:var(--card);border-top:1px solid var(--line)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;padding-block:28px 36px;align-items:center}
+.dev{display:flex;flex-direction:column;gap:2px}
+.dev .k{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.dev b{font-family:var(--f-display);font-size:22px;font-weight:800}
+.dev span{color:var(--mute);font-size:15px}
+.foot img{height:44px;width:auto}
+
+@media (max-width:560px){
+  .card{grid-template-columns:96px 1fr}
+  .body{padding:14px}
+  .topbar img{height:44px}
+  .topnav{display:none}
+  .hero{padding-block:30px 22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topbar">
+    <a href="https://pags-kuelsheim.de" target="_blank" rel="noopener"><img src="img/pags-logo.png" alt="PAGS Gemeinschaftsschule Külsheim" width="109" height="52"></a>
+    <nav class="topnav" aria-label="Bereiche">
+      <a href="#schueler">Schüler</a><a href="#lehrkraefte">Lehrkräfte</a><a href="#familien">Familien</a><a href="#download">Downloads</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div class="kicker">Pater-Alois-Grimm-Schule Külsheim</div>
+  <h1>Apps für die PAGS</h1>
+  <p class="lead">Alle Web-Apps an einem Ort: zum Planen, Lernen und Organisieren für Schülerinnen und Schüler, Lehrkräfte und Familien. Zu jeder App gibt es eine bebilderte Anleitung als PDF.</p>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="facts"><span><b>8</b> Apps</span><span><b>8</b> Anleitungen</span><span>Läuft im Browser auf Handy, Tablet und Computer</span></div>
+</div>
+
+<div class="wrap">
+
+<section class="group" id="schueler">
+  <div class="ghead"><h2>Für Schülerinnen und Schüler</h2><p>Ein Konto für Lernplaner und Wochenstapel</p></div>
+  <div class="grid">
+    <article class="card">
+      <div class="thumb"><img src="img/lernplaner.jpg" alt="Tagesansicht des PAGS Lernplaners" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag login">Mit Anmeldung</span><span class="tag">Handy</span></div>
+        <h3>PAGS Lernplaner</h3>
+        <p>Aufgaben, IL-Stunden und Klassenarbeiten im Blick: Tag planen, Woche verteilen, Lernplan für Arbeiten.</p>
+        <div class="actions">
+          <a class="btn primary" href="../" target="_blank" rel="noopener">App öffnen</a>
+          <a class="btn" href="downloads/Anleitung-PAGS-Lernplaner.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="thumb"><img src="img/wochenstapel.jpg" alt="Wochenansicht des Wochenstapels" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag login">Mit Anmeldung</span><span class="tag">Handy</span></div>
+        <h3>Wochenstapel</h3>
+        <p>Die Woche als Stapel: Aufgaben pro Tag anlegen, abhaken, verschieben, wiederholen. Unerledigtes wandert nach „Heute“.</p>
+        <div class="actions">
+          <a class="btn primary" href="../wochenstapel/" target="_blank" rel="noopener">App öffnen</a>
+          <a class="btn" href="downloads/Anleitung-Wochenstapel-Online.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="thumb"><img src="img/tagderberufe.jpg" alt="Startseite der App zum Tag der Berufe" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag">Ohne Anmeldung</span><span class="tag">Lerngruppe 9</span></div>
+        <h3>Tag der Berufe Hardheim</h3>
+        <p>Lageplan, Betriebe und digitaler Laufzettel mit Unterschrift und PDF-Versand für den Berufe-Tag am 23.10.2026.</p>
+        <div class="actions">
+          <a class="btn primary" href="https://ratpoison-de.github.io/tag-der-berufe/" target="_blank" rel="noopener">App öffnen</a>
+          <a class="btn" href="downloads/Anleitung-Tag-der-Berufe.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group" id="lehrkraefte">
+  <div class="ghead"><h2>Für Lehrkräfte</h2><p>Gleiches Konto wie im Lernplaner</p></div>
+  <div class="grid">
+    <article class="card">
+      <div class="thumb"><img src="img/lernbegleiter.jpg" alt="Tagesansicht der Lernbegleiter-App mit Abschnitten" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag login">Mit Anmeldung</span><span class="tag">Neu</span></div>
+        <h3>Lernbegleiter-App</h3>
+        <p>Die Schulwoche für Lehrkräfte: jeder Tag mit Vorbereitung, Drucken, Einsammeln und Erledigen. Favoriten mit Sternen.</p>
+        <div class="actions">
+          <a class="btn primary" href="../lernbegleiter/" target="_blank" rel="noopener">App öffnen</a>
+          <a class="btn" href="downloads/Anleitung-Lernbegleiter-App.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="thumb"><img src="img/lehrkraft.jpg" alt="Kontenliste der Lehrkraft-Seite" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag login">Nur freigeschaltete Lehrkräfte</span></div>
+        <h3>Lehrkraft-Seite</h3>
+        <p>Konten von Lernplaner, Wochenstapel und Lernbegleiter verwalten: Passwörter zurücksetzen, Konten löschen.</p>
+        <div class="actions">
+          <a class="btn primary" href="../lehrkraft.html" target="_blank" rel="noopener">App öffnen</a>
+          <a class="btn" href="downloads/Anleitung-Lernplaner-Lehrkraft-Seite.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group" id="familien">
+  <div class="ghead"><h2>Für Familien und alle</h2><p>Schule kennenlernen und im Alltag begleiten</p></div>
+  <div class="grid">
+    <article class="card">
+      <div class="thumb"><img src="img/pagsapp.jpg" alt="Ansicht PAGS Alltag mit Sekretariat und Ferien" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag">Anmeldung freiwillig</span><span class="tag">Eltern</span></div>
+        <h3>PAGS-App</h3>
+        <ul><li><b>Kennenlernen:</b> Konzept, Abschlüsse, Ganztag, Anmeldung</li><li><b>Alltag:</b> Sekretariat, Krankmeldung, Mensa, Ferien, eigene Termine</li></ul>
+        <div class="actions">
+          <a class="btn primary" href="https://ratpoison-de.github.io/pags-app/" target="_blank" rel="noopener">App öffnen</a>
+          <a class="btn" href="https://ratpoison-de.github.io/pags-app/PAGS-App_Leitfaden.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Leitfaden</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="group" id="download">
+  <div class="ghead"><h2>Zum Herunterladen</h2><p>Ohne Konto, Daten bleiben auf dem Gerät</p></div>
+  <div class="grid">
+    <article class="card">
+      <div class="thumb"><img src="img/android.jpg" alt="Wochenstapel als Android-App" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag">Android 8+</span><span class="tag">Offline</span></div>
+        <h3>Wochenstapel für Android</h3>
+        <p>Die Wochen-To-do-App als installierbare App (APK). Läuft komplett offline, mit Sicherung über die Zwischenablage.</p>
+        <div class="actions">
+          <a class="btn primary" href="downloads/Wochenstapel.apk" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>APK laden</a>
+          <a class="btn" href="downloads/Anleitung-Wochenstapel-Android.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="thumb"><img src="img/webapp.jpg" alt="Wochenstapel als Web-App im PAGS-Design" loading="lazy"></div>
+      <div class="body">
+        <div class="tags"><span class="tag">HTML-Datei</span><span class="tag">Offline</span></div>
+        <h3>Wochenstapel als Datei</h3>
+        <p>Eine einzelne HTML-Datei im PAGS-Design. Öffnet in jedem Browser, auch ohne Internet, oder lässt sich auf eigenen Webspace legen.</p>
+        <div class="actions">
+          <a class="btn primary" href="downloads/Wochenstapel-PAGS.html" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>Datei laden</a>
+          <a class="btn" href="downloads/Anleitung-Wochenstapel-Web-App.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Anleitung</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="notes">
+  <div class="note"><h3>Ein Konto, drei Apps</h3><p>Lernplaner, Wochenstapel und Lernbegleiter nutzen dieselbe Anmeldung mit Benutzername und Passwort. Jede Person sieht nur ihre eigenen Daten.</p></div>
+  <div class="note"><h3>Wie eine App aufs Handy</h3><p>Android: Chrome-Menü → „Zum Startbildschirm hinzufügen“. iPhone: Safari → Teilen → „Zum Home-Bildschirm“.</p></div>
+  <div class="note"><h3>Datenschutz</h3><p>Gespeichert wird nur, was man selbst einträgt, auf Servern in der EU (Frankfurt). Bitte keinen vollen Namen als Benutzernamen verwenden.</p></div>
+</div>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="dev">
+      <span class="k">Entwickelt von</span>
+      <b>Thorsten von Plotho-Kettner</b>
+      <span>Lehrer an der Pater-Alois-Grimm-Schule Külsheim · t.von.plotho-kettner@pagskuelsheim.de</span>
+    </div>
+    <a href="https://pags-kuelsheim.de" target="_blank" rel="noopener"><img src="img/pags-logo.png" alt="Zur Website der PAGS" width="92" height="44"></a>
+  </div>
+</footer>
+</body>
+</html>
