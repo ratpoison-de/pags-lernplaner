@@ -48,6 +48,15 @@ Minimalistische Wochen-To-do-App: die nächsten sieben Tage untereinander, Aufga
 - Wird ein Konto über die Lehrkraft-Seite gelöscht, verschwinden auch die Wochenstapel-Daten.
 - Über „Zum Startbildschirm hinzufügen“ wie eine App nutzbar.
 
+## Lernbegleiter-App (für Lehrkräfte)
+
+**https://ratpoison-de.github.io/pags-lernplaner/lernbegleiter/**
+
+Wochenplanung für Lehrkräfte nach dem Prinzip des Wochenstapels. Jeder Tag hat vier Abschnitte: **Vorbereitung, Drucken, Einsammeln, Erledigen**. Aufgaben lassen sich mit Sternen als Favoriten markieren und über „Nur Favoriten“ filtern.
+
+- Gleiche Konten wie Lernplaner und Wochenstapel, eigene Daten in der Tabelle `lernbegleiter` ([`supabase/lernbegleiter.sql`](supabase/lernbegleiter.sql)).
+- Über „Zum Startbildschirm hinzufügen“ wie eine App nutzbar.
+
 ## Lehrkraft-Seite
 
 **https://ratpoison-de.github.io/pags-lernplaner/lehrkraft.html**
@@ -108,4 +117,6 @@ Kostenlose Supabase-Projekte werden nach einer Woche ohne Nutzung pausiert (z. B
 | `supabase/admin.sql` | Lehrkraft-Rechte und -Funktionen |
 | `wochenstapel/` | Wochenstapel-App mit Manifest und Icons |
 | `supabase/wochenstapel.sql` | Tabelle und Zugriffsregeln für den Wochenstapel |
+| `lernbegleiter/` | Lernbegleiter-App für Lehrkräfte mit Manifest und Icons |
+| `supabase/lernbegleiter.sql` | Tabelle und Zugriffsregeln für den Lernbegleiter |
 | `manifest.webmanifest`, `icon-*.png` | „Zum Startbildschirm hinzufügen“ |
